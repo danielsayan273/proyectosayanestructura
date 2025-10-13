@@ -1,1 +1,414 @@
-<h1> Estructura de datos </h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Estructuras de Datos</title>
+
+  <style>
+    :root {
+      --azul: #059669;
+      --morado: #047857;
+      --rosa: #14b8a6;
+      --verde: #65a30d;
+      --fondo: #ecfdf5;
+      --blanco: #ffffff;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      background: var(--fondo);
+      color: #333;
+      overflow-x: hidden;
+      background: linear-gradient(120deg, #3b82f6, #06b6d4, #10b981);
+      background-attachment: fixed;
+    }
+
+    header {
+      text-align: center;
+      background: linear-gradient(135deg, var(--azul), var(--morado));
+      color: white;
+      padding: 50px 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 { margin: 0; font-size: 2.6rem; }
+    header p { font-size: 1.1rem; opacity: 0.9; }
+
+    .navbar {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 30px;
+      display: inline-block;
+      padding: 10px 25px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      color: #fff;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--verde);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+
+    /* CARRUSEL */
+    .carrusel {
+      position: relative;
+      max-width: 1000px;
+      margin: 50px auto;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 25px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      padding: 0 60px;
+    }
+
+    .slide {
+      display: none;
+      padding: 40px;
+      animation: fade 0.5s ease-in-out;
+    }
+
+    .slide.active { display: block; }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .slide h2 {
+      font-size: 1.8rem;
+      background: linear-gradient(90deg, var(--azul), var(--morado));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .slide p, .slide ul {
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    .slide .imagen-ejemplo {
+      width: 100%;
+      max-width: 400px;
+      margin: 20px auto;
+      border-radius: 15px;
+      border: 2px dashed var(--azul);
+      display: block;
+    }
+
+    .boton {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(135deg, var(--morado), var(--rosa));
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .boton:hover {
+      transform: translateY(-50%) scale(1.1);
+      background: linear-gradient(135deg, var(--rosa), var(--verde));
+    }
+
+    #prev { left: 15px; }
+    #next { right: 15px; }
+
+    section {
+      max-width: 1000px;
+      margin: 60px auto;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 25px;
+      padding: 40px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    section h2 {
+      font-size: 2rem;
+      background: linear-gradient(90deg, var(--verde), var(--azul));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 15px;
+    }
+
+    .grid-tipos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .tipo-card {
+      background: linear-gradient(135deg, #ffffff, #f1f5f9);
+      border-radius: 20px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .tipo-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .tipo-card h3 { color: var(--morado); margin-bottom: 10px; }
+    .tipo-card p { font-size: 0.95rem; }
+    .mini-img {
+      width: 100%;
+      height: 150px;
+      border: 3px dashed var(--azul);
+      border-radius: 10px;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-style: italic;
+      color: #666;
+    }
+    .mini-img img{
+      width: 100%;
+      height: 130px;
+      border-radius: 10px;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-style: italic;
+      color: #666;
+    }
+
+    .grid-arreglos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: linear-gradient(135deg, #ffffff, #f1f5f9);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover { transform: translateY(-5px); }
+
+    .card h3 { color: var(--morado); font-size: 1.5rem; margin-bottom: 10px; }
+
+    .espacio3d {
+      width: 100%;
+      height: 180px;
+      border: 2px dashed var(--azul);
+      border-radius: 15px;
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-style: italic;
+    }
+
+    .espacio3d img { width: 100%; height: 200px; border-radius: 15px; }
+
+    .btn-ar {
+      margin-top: 15px;
+      display: inline-block;
+      padding: 10px 18px;
+      background: linear-gradient(90deg, var(--azul), var(--morado));
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .btn-ar:hover { background: linear-gradient(90deg, var(--morado), var(--rosa)); transform: scale(1.05); }
+
+    footer {
+      text-align: center;
+      background: linear-gradient(135deg, var(--azul), var(--morado));
+      color: white;
+      padding: 25px;
+      margin-top: 60px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Estructuras de Datos Orientadas a Objetos</h1>
+    <p>Explora los conceptos, clasificación e identificación con ejemplos visuales</p>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="#tipos">Tipos de estructuras</a></li>
+        <li><a href="#tipodearreglo">Tipos de arreglos</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Carrusel -->
+  <div class="carrusel">
+    <button class="boton" id="prev">&#10094;</button>
+
+    <div class="slide active">
+      <h2>Conceptos Básicos</h2>
+      <p>    Las estructuras de datos son formas organizadas de almacenar y gestionar información para usarla 
+       de manera eficiente. En la programación orientada a objetos, permiten representar datos mediante 
+       clases y objetos, facilitando el acceso, la modificación y el manejo lógico de la información. </p>
+      <img src="imagenes/conceptobasico.png" alt="Ejemplo concepto" class="imagen-ejemplo">
+    </div>
+
+    <div class="slide">
+      <h2>Clasificación</h2>
+      <ul>
+        <li><strong>Lineales:</strong> Arreglos, Listas, Pilas, Colas.</li>
+        <li><strong>No lineales:</strong> Árboles, Grafos.</li>
+      </ul>
+      <img src="imagenes/clasificacion.png" alt="Ejemplo clasificación" class="imagen-ejemplo">
+    </div>
+
+    <div class="slide">
+      <h2>Identificación</h2>
+      <ul>
+        <li><strong>Pilas:</strong> LIFO (Último en entrar, primero en salir).</li>
+        <li><strong>Colas:</strong> FIFO (Primero en entrar, primero en salir).</li>
+        <li><strong>Árboles:</strong> Relación jerárquica entre nodos.</li>
+      </ul>
+      <img src="imagenes/indetificacion.avif" alt="Ejemplo identificación" class="imagen-ejemplo">
+    </div>
+
+    <div class="slide">
+      <h2>Recursividad</h2>
+      <p>La recursividad es cuando una función se llama a sí misma para resolver un problema más pequeño.</p>
+      <code>
+function factorial(n) {
+  if (n === 0) return 1;
+  return n * factorial(n - 1);
+}
+      </code>
+      <img src="imagenes/recursividad.svg" alt="Ejemplo recursividad" class="imagen-ejemplo">
+    </div>
+
+    <button class="boton" id="next">&#10095;</button>
+  </div>
+
+  <!-- Tipos de estructuras de datos -->
+  <section id="tipos">
+    <h2>Tipos de Estructuras de Datos</h2>
+    <div class="grid-tipos">
+      <div class="tipo-card">
+        <h3>Arreglos</h3>
+        <p>Conjunto de elementos del mismo tipo almacenados en posiciones contiguas de memoria.</p>
+        <div class="mini-img"><img src="imagenes/arreglos.png"></div>
+      </div>
+
+      <div class="tipo-card">
+        <h3>Pilas</h3>
+        <p>Estructura LIFO donde el último elemento en entrar es el primero en salir.</p>
+        <div class="mini-img"><img src="imagenes/pilas.png"></div>
+      </div>
+
+      <div class="tipo-card">
+        <h3>Colas</h3>
+        <p>Estructura FIFO donde el primer elemento en entrar es el primero en salir.</p>
+        <div class="mini-img"><img src="imagenes/Colas.png"></div>
+      </div>
+
+      <div class="tipo-card">
+        <h3>Listas Enlazadas</h3>
+        <p>Conjunto de nodos que contienen datos y una referencia al siguiente nodo.</p>
+        <div class="mini-img"><img src="imagenes/tiposdelistas.png"></div>
+      </div>
+
+      <div class="tipo-card">
+        <h3>Árboles</h3>
+        <p>Estructura jerárquica donde cada nodo puede tener hijos, formando ramas.</p>
+        <div class="mini-img"><img src="imagenes/arbolEjemplo.png"></div>
+      </div>
+
+      <div class="tipo-card">
+        <h3>Recursividad</h3>
+        <p>Técnica donde una función se llama a sí misma para resolver subproblemas.</p>
+        <div class="mini-img"><img src="imagenes/recursividad.svg"></div>
+      </div>
+    </div>
+  </section>
+
+   <section>
+    <h2 id="arreglos">Arreglos</h2>
+    <p>
+      Los arreglos son estructuras de datos <strong>lineales y estáticas</strong> que almacenan elementos
+      del mismo tipo en posiciones contiguas de memoria.
+    </p>
+    <ul>
+      <li><strong>Unidimensional:</strong> Vector simple. Ejemplo: [1, 2, 3, 4]</li>
+      <li><strong>Bidimensional:</strong> Matriz. Ejemplo: [[1, 2], [3, 4]]</li>
+      <li><strong>Tridimensional:</strong> Matriz de Matrices.Ejemplo [1][2][3]</li>
+    </ul>
+  </section>
+
+  <!-- Tipos de arreglos -->
+  <section>
+    <h2 id="tipodearreglo">Tipos de Arreglos</h2>
+    <div class="grid-arreglos">
+      <div class="card">
+        <h3>Unidimensional</h3>
+        <p>Es una lista lineal de elementos del mismo tipo. Se usa para almacenar datos simples, como notas o edades.</p>
+        <div class="espacio3d"><img src="imagenes/unidimensional.png"></div>
+        <a href="https://sketchfab.com/models/0da5c2d893f449acbf2fb7ea835da51e/embed?autostart=1&cardboard=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0" class="btn-ar">Ver en Realidad Aumentada</a>
+      </div>
+
+      <div class="card">
+        <h3>Bidimensional</h3>
+        <p>Representa una tabla o matriz. Se usa en cálculos matemáticos, gráficos o estructuras tabulares.</p>
+        <div class="espacio3d"><img src="imagenes/bidimensional.png"></div>
+        <a href="https://sketchfab.com/models/c23783f7057a488ca104632c73ebbfe2/embed?autostart=1&cardboard=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0" class="btn-ar">Ver en Realidad Aumentada</a>
+      </div>
+
+      <div class="card">
+        <h3>Tridimensional</h3>
+        <p>Extiende el concepto de matriz a tres dimensiones. Ideal para representar espacios, coordenadas o cubos de datos.</p>
+        <div class="espacio3d"><img src="imagenes/tridimensional.png"></div>
+        <a href="https://sketchfab.com/models/12129ce7a5d7429291714ae06150b42c/embed?autostart=1&cardboard=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0" class="btn-ar">Ver en Realidad Aumentada</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>Daniel Francisco Valdovinos Castro DSM-41</footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let index = 0;
+    function mostrarSlide(nuevoIndex) {
+      slides[index].classList.remove('active');
+      index = (nuevoIndex + slides.length) % slides.length;
+      slides[index].classList.add('active');
+    }
+    document.getElementById('next').onclick = () => mostrarSlide(index + 1);
+    document.getElementById('prev').onclick = () => mostrarSlide(index - 1);
+  </script>
+</body>
+</html>
