@@ -240,7 +240,6 @@
   border-radius: 15px;
 }
 
-
     .btn-ar {
       margin-top: 15px;
       display: inline-block;
@@ -263,6 +262,90 @@
       margin-top: 60px;
       font-size: 0.9rem;
     }
+
+    /* --- ESTILOS PILA INTERACTIVA (AÑADIDOS) --- */
+    .pila-interactiva-contenedor {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .controles {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .controles input {
+        border: 2px solid var(--azul);
+        border-radius: 8px;
+        padding: 8px;
+    }
+    .controles button {
+        background: linear-gradient(90deg, var(--azul), var(--morado));
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .controles button:hover {
+        transform: scale(1.05);
+        background: linear-gradient(90deg, var(--morado), var(--rosa));
+    }
+
+    #pila-contenedor {
+        border: 3px solid var(--azul);
+        width: 200px;
+        height: 300px;
+        background: #ffffff;
+        padding: 5px;
+        border-radius: 10px;
+    }
+
+    #pila-visual {
+        display: flex;
+        flex-direction: column-reverse; /* ¡La magia está aquí! */
+        align-items: center;
+        height: 100%;
+        width: 100%;
+    }
+
+    .item-pila {
+        background-color: #3498db;
+        color: white;
+        width: 90%;
+        text-align: center;
+        padding: 10px 0;
+        margin-top: 5px; /* Separación entre items */
+        border: 1px solid #2980b9;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    .item-pila.tope {
+        background-color: #e74c3c; /* Color diferente para el tope */
+        border: 2px solid #c0392b;
+    }
+
+    #mensajes {
+        min-height: 1.2em;
+        font-weight: bold;
+    }
+    #info-tope {
+        font-weight: bold;
+        color: var(--morado);
+    }
+
+    .error-overflow {
+        color: #c0392b; /* Rojo fuerte */
+    }
+
+    .error-underflow {
+        color: #e67e22; /* Naranja */
+    }
   </style>
 </head>
 
@@ -278,15 +361,14 @@
     </nav>
   </header>
 
-  <!-- Carrusel -->
   <div class="carrusel">
     <button class="boton" id="prev">&#10094;</button>
 
     <div class="slide active">
       <h2>Conceptos Básicos</h2>
       <p>    Las estructuras de datos son formas organizadas de almacenar y gestionar información para usarla 
-       de manera eficiente. En la programación orientada a objetos, permiten representar datos mediante 
-       clases y objetos, facilitando el acceso, la modificación y el manejo lógico de la información. </p>
+        de manera eficiente. En la programación orientada a objetos, permiten representar datos mediante 
+        clases y objetos, facilitando el acceso, la modificación y el manejo lógico de la información. </p>
       <img src="conceptobasico.png" alt="Ejemplo concepto" class="imagen-ejemplo">
     </div>
 
@@ -324,7 +406,6 @@ function factorial(n) {
     <button class="boton" id="next">&#10095;</button>
   </div>
 
-  <!-- Tipos de estructuras de datos -->
   <section id="tipos">
     <h2>Tipos de Estructuras de Datos</h2>
     <div class="grid-tipos">
@@ -366,7 +447,25 @@ function factorial(n) {
     </div>
   </section>
 
-   <section>
+  <section id="pila-interactiva">
+      <h2>Animación de Pila Interactiva (LIFO)</h2>
+      <div class="pila-interactiva-contenedor">
+          <div class="controles">
+              <input type="text" id="valor-input" placeholder="Valor a añadir">
+              <button id="btn-push">Añadir</button>
+              <button id="btn-pop">Sacar</button>
+          </div>
+      
+          <div id="mensajes"></div>
+          <div id="info-tope">Tope: (vacío)</div>
+      
+          <div id="pila-contenedor">
+              <div id="pila-visual">
+                  </div>
+          </div>
+      </div>
+  </section>
+  <section>
     <h2 id="arreglos">Arreglos</h2>
     <p>
       Los arreglos son estructuras de datos <strong>lineales y estáticas</strong> que almacenan elementos
@@ -379,7 +478,6 @@ function factorial(n) {
     </ul>
   </section>
 
-  <!-- Tipos de arreglos -->
   <section>
     <h2 id="tipodearreglo">Tipos de Arreglos</h2>
     <div class="grid-arreglos">
@@ -409,6 +507,7 @@ function factorial(n) {
   <footer>Daniel Francisco Valdovinos Castro DSM-41</footer>
 
   <script>
+    // --- LÓGICA DEL CARRUSEL (Existente) ---
     const slides = document.querySelectorAll('.slide');
     let index = 0;
     function mostrarSlide(nuevoIndex) {
@@ -418,6 +517,98 @@ function factorial(n) {
     }
     document.getElementById('next').onclick = () => mostrarSlide(index + 1);
     document.getElementById('prev').onclick = () => mostrarSlide(index - 1);
+
+
+    // --- LÓGICA PILA INTERACTIVA (AÑADIDA) ---
+
+    // --- Configuración Inicial ---
+    const MAX_CAPACIDAD = 5; // Nuestra pila solo puede tener 5 elementos
+    let pila = []; // El arreglo que simula nuestra pila
+
+    // --- Referencias a elementos del DOM ---
+    const btnPush = document.getElementById('btn-push');
+    const btnPop = document.getElementById('btn-pop');
+    const inputValor = document.getElementById('valor-input');
+    const pilaVisual = document.getElementById('pila-visual');
+    const areaMensajes = document.getElementById('mensajes');
+    const infoTope = document.getElementById('info-tope');
+
+    // --- Event Listeners para los botones ---
+    btnPush.addEventListener('click', () => {
+        const valor = inputValor.value;
+        if (valor) {
+            hacerPush(valor);
+            inputValor.value = ''; // Limpiar input
+        }
+    });
+
+    btnPop.addEventListener('click', () => {
+        hacerPop();
+    });
+
+    // --- Funciones de la Pila ---
+
+    function hacerPush(valor) {
+        // 1. Detectar Desbordamiento (Overflow)
+        if (pila.length >= MAX_CAPACIDAD) {
+            mostrarMensaje('¡Desbordamiento! La pila está llena.', 'error-overflow');
+            return; // No hacemos nada más
+        }
+
+        // 2. Añadir al arreglo (lógica)
+        pila.push(valor);
+
+        // 3. Actualizar la vista
+        actualizarVisual();
+    }
+
+    function hacerPop() {
+        // 1. Detectar Subdesbordamiento (Underflow)
+        if (pila.length === 0) {
+            mostrarMensaje('¡Subdesbordamiento! La pila está vacía.', 'error-underflow');
+            return; // No hacemos nada más
+        }
+
+        // 2. Quitar del arreglo (lógica)
+        pila.pop();
+
+        // 3. Actualizar la vista
+        actualizarVisual();
+    }
+
+    // --- Funciones Auxiliares ---
+
+    function actualizarVisual() {
+        // 1. Limpiar la vista
+        pilaVisual.innerHTML = '';
+        mostrarMensaje('', ''); // Limpiar mensajes de error
+
+        // 2. Volver a dibujar la pila desde el arreglo
+        pila.forEach((valor, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item-pila';
+            itemDiv.innerText = valor;
+
+            // 3. Marcar el Tope (Cima)
+            if (index === pila.length - 1) {
+                itemDiv.classList.add('tope');
+                infoTope.innerText = `Tope: ${valor}`;
+            }
+
+            pilaVisual.appendChild(itemDiv);
+        });
+
+        // 4. Actualizar info del tope si está vacía
+        if (pila.length === 0) {
+            infoTope.innerText = 'Tope: (vacío)';
+        }
+    }
+
+    function mostrarMensaje(texto, clase) {
+        areaMensajes.innerText = texto;
+        areaMensajes.className = clase; // Asigna la clase de error (o ninguna)
+    }
+
   </script>
 </body>
 </html>
