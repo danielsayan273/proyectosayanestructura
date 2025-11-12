@@ -196,7 +196,7 @@
       justify-content: center;
       font-style: italic;
       color: #666;
-    }
+  _}
 .grid-arreglos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -263,7 +263,7 @@
       font-size: 0.9rem;
     }
 
-    /* --- ESTILOS PILA INTERACTIVA (AÑADIDOS) --- */
+    /* --- ESTILOS PILA INTERACTIVA (EXISTENTE) --- */
     .pila-interactiva-contenedor {
         display: flex;
         flex-direction: column;
@@ -346,6 +346,139 @@
     .error-underflow {
         color: #e67e22; /* Naranja */
     }
+
+    /* --- INICIO: ESTILOS PARA COLAS (AÑADIDOS) --- */
+    .colas-contenedor-principal {
+        display: flex;
+        flex-wrap: wrap; /* Para que en pantallas pequeñas se ponga uno debajo del otro */
+        gap: 25px;
+    }
+
+    .cola-mitad {
+        flex: 1; /* Cada mitad toma el mismo espacio */
+        min-width: 300px; /* Ancho mínimo antes de envolverse */
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .cola-mitad h3 {
+        color: var(--morado);
+        text-align: center;
+        margin-top: 0;
+    }
+
+    .controles-cola {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .controles-cola input {
+        border: 2px solid var(--azul);
+        border-radius: 8px;
+        padding: 8px;
+        max-width: 100px; /* Ajuste para que quepa bien */
+    }
+
+    .controles-cola button {
+        background: linear-gradient(90deg, var(--azul), var(--morado));
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .controles-cola button:hover {
+        transform: scale(1.05);
+        background: linear-gradient(90deg, var(--morado), var(--rosa));
+    }
+
+    .cola-visual-contenedor {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px dashed var(--azul);
+        border-radius: 10px;
+        background: #f9f9f9;
+        padding: 10px;
+        min-height: 70px;
+        gap: 5px;
+    }
+
+    .item-cola {
+        background-color: #3498db;
+        color: white;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        border-radius: 5px;
+        border: 1px solid #2980b9;
+        position: relative;
+        flex-shrink: 0; /* Evita que se encojan */
+    }
+    
+    /* Estilos para los slots de la cola circular */
+    .slot-cola-circular {
+        background-color: #ecf0f1;
+        border: 1px dashed #bdc3c7;
+        color: #7f8c8d;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        border-radius: 5px;
+        position: relative;
+        flex-shrink: 0;
+    }
+    .slot-cola-circular.filled {
+        background-color: #3498db;
+        color: white;
+        border-color: #2980b9;
+    }
+
+    /* Estilos para los punteros (Frente y Final) */
+    .indicador-frente, .indicador-final {
+        position: absolute;
+        bottom: -20px; /* Debajo del item */
+        font-size: 0.8rem;
+        font-weight: bold;
+        border-radius: 5px;
+  *     padding: 1px 4px;
+    }
+    .indicador-frente {
+        background: #e74c3c;
+        color: white;
+    }
+    .indicador-final {
+        background: #2ecc71;
+        color: white;
+    }
+    
+    .cola-info {
+        text-align: center;
+        margin-top: 25px; /* Espacio extra para los indicadores F/R */
+        font-weight: bold;
+        color: var(--morado);
+        min-height: 1.2em;
+    }
+    .cola-mensajes {
+        text-align: center;
+        min-height: 1.2em;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+    /* --- FIN: ESTILOS PARA COLAS (AÑADIDOS) --- */
+
   </style>
 </head>
 
@@ -401,7 +534,7 @@ function factorial(n) {
 }
       </code>
       <img src="recursividad.svg" alt="Ejemplo recursividad" class="imagen-ejemplo">
-    </div>
+  _</div>
 
     <button class="boton" id="next">&#10095;</button>
   </div>
@@ -504,7 +637,38 @@ function factorial(n) {
       </div>
   </section>
  
+  <section id="colas-interactivas">
+    <h2>Animación de Colas Interactivas (FIFO)</h2>
+    <div class="colas-contenedor-principal">
+      
+            <div class="cola-mitad" id="cola-simple-app">
+        <h3>Cola Simple</h3>
+        <div class="controles-cola">
+          <input type="text" id="valor-cola-simple" placeholder="Valor">
+          <button id="btn-encolar-simple">Encolar (Enqueue)</button>
+          <button id="btn-desencolar-simple">Desencolar (Dequeue)</button>
+        </div>
+        <div class="cola-visual-contenedor" id="cola-simple-visual">
+                  </div>
+        <div class="cola-mensajes" id="mensajes-cola-simple"></div>
+        <div class="cola-info" id="info-cola-simple">Frente: - | Final: -</div>
+      </div>
 
+            <div class="cola-mitad" id="cola-circular-app">
+        <h3>Cola Circular</h3>
+        <div class="controles-cola">
+          <input type="text" id="valor-cola-circular" placeholder="Valor">
+          <button id="btn-encolar-circular">Encolar (Enqueue)</button>
+          <button id="btn-desencolar-circular">Desencolar (Dequeue)</button>
+        </div>
+        <div class="cola-visual-contenedor" id="cola-circular-visual">
+                  </div>
+        <div class="cola-mensajes" id="mensajes-cola-circular"></div>
+        <div class="cola-info" id="info-cola-circular">Frente: -1 | Final: -1</div>
+      </div>
+
+    </div>
+  </section>
   <footer>Daniel Francisco Valdovinos Castro DSM-41</footer>
 
   <script>
@@ -520,7 +684,7 @@ function factorial(n) {
     document.getElementById('prev').onclick = () => mostrarSlide(index - 1);
 
 
-    // --- LÓGICA PILA INTERACTIVA (AÑADIDA) ---
+    // --- LÓGICA PILA INTERACTIVA (EXISTENTE) ---
 
     // --- Configuración Inicial ---
     const MAX_CAPACIDAD = 5; // Nuestra pila solo puede tener 5 elementos
@@ -560,7 +724,7 @@ function factorial(n) {
         pila.push(valor);
 
         // 3. Actualizar la vista
-        actualizarVisual();
+        actualizarVisualPila(); // Renombrada para evitar confusión
     }
 
     function hacerPop() {
@@ -574,12 +738,12 @@ function factorial(n) {
         pila.pop();
 
         // 3. Actualizar la vista
-        actualizarVisual();
+        actualizarVisualPila(); // Renombrada para evitar confusión
     }
 
     // --- Funciones Auxiliares ---
 
-    function actualizarVisual() {
+    function actualizarVisualPila() { // Renombrada
         // 1. Limpiar la vista
         pilaVisual.innerHTML = '';
         mostrarMensaje('', ''); // Limpiar mensajes de error
@@ -609,6 +773,204 @@ function factorial(n) {
         areaMensajes.innerText = texto;
         areaMensajes.className = clase; // Asigna la clase de error (o ninguna)
     }
+
+    // --- INICIO: LÓGICA DE COLAS (AÑADIDA) ---
+
+    // --- LÓGICA COLA SIMPLE ---
+    const MAX_COLA_SIMPLE = 5;
+    let colaSimple = []; // Arreglo dinámico para la cola simple
+
+    // DOM Refs Cola Simple
+    const btnEncolarSimple = document.getElementById('btn-encolar-simple');
+    const btnDesencolarSimple = document.getElementById('btn-desencolar-simple');
+    const inputSimple = document.getElementById('valor-cola-simple');
+    const visualSimple = document.getElementById('cola-simple-visual');
+    const msjSimple = document.getElementById('mensajes-cola-simple');
+    const infoSimple = document.getElementById('info-cola-simple');
+
+    // Eventos Cola Simple
+    btnEncolarSimple.addEventListener('click', () => {
+        const valor = inputSimple.value;
+        if (valor) {
+            encolarSimple(valor);
+            inputSimple.value = '';
+        }
+    });
+
+    btnDesencolarSimple.addEventListener('click', () => {
+        desencolarSimple();
+    });
+
+    function encolarSimple(valor) {
+        if (colaSimple.length >= MAX_COLA_SIMPLE) {
+            mostrarMensajeCola(msjSimple, '¡Desbordamiento! Cola simple llena.', 'error-overflow');
+            return;
+        }
+        colaSimple.push(valor); // Añade al final
+        actualizarVisualSimple();
+    }
+
+    function desencolarSimple() {
+        if (colaSimple.length === 0) {
+            mostrarMensajeCola(msjSimple, '¡Subdesbordamiento! Cola simple vacía.', 'error-underflow');
+            return;
+        }
+        colaSimple.shift(); // Saca del inicio
+        actualizarVisualSimple();
+    }
+
+    function actualizarVisualSimple() {
+        visualSimple.innerHTML = ''; // Limpiar
+        mostrarMensajeCola(msjSimple, '', ''); // Limpiar mensajes
+
+        colaSimple.forEach((valor, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item-cola';
+            itemDiv.innerText = valor;
+
+            // Añadir indicadores
+            if (index === 0) { // Frente
+                const frenteTag = document.createElement('span');
+                frenteTag.className = 'indicador-frente';
+                frenteTag.innerText = 'F';
+                itemDiv.appendChild(frenteTag);
+            }
+            if (index === colaSimple.length - 1) { // Final
+                const finalTag = document.createElement('span');
+                finalTag.className = 'indicador-final';
+                finalTag.innerText = 'R';
+                itemDiv.appendChild(finalTag);
+            }
+            visualSimple.appendChild(itemDiv);
+        });
+
+        // Actualizar info
+        if (colaSimple.length === 0) {
+            infoSimple.innerText = 'Frente: - | Final: -';
+        } else {
+            infoSimple.innerText = `Frente: ${colaSimple[0]} | Final: ${colaSimple[colaSimple.length - 1]}`;
+        }
+    }
+
+    // --- LÓGICA COLA CIRCULAR ---
+    const MAX_COLA_CIRCULAR = 5;
+    let colaCircular = new Array(MAX_COLA_CIRCULAR).fill(null);
+    let frenteCircular = -1;
+    let finalCircular = -1;
+    let slotsCirculares = []; // Para guardar los divs de los slots
+
+    // DOM Refs Cola Circular
+    const btnEncolarCircular = document.getElementById('btn-encolar-circular');
+    const btnDesencolarCircular = document.getElementById('btn-desencolar-circular');
+    const inputCircular = document.getElementById('valor-cola-circular');
+    const visualCircular = document.getElementById('cola-circular-visual');
+    const msjCircular = document.getElementById('mensajes-cola-circular');
+    const infoCircular = document.getElementById('info-cola-circular');
+
+    // Inicializar la vista de la cola circular
+    function inicializarColaCircular() {
+        visualCircular.innerHTML = '';
+        slotsCirculares = [];
+        for (let i = 0; i < MAX_COLA_CIRCULAR; i++) {
+            const slotDiv = document.createElement('div');
+            slotDiv.className = 'slot-cola-circular';
+            slotDiv.innerText = ''; // Vacío
+            visualCircular.appendChild(slotDiv);
+            slotsCirculares.push(slotDiv);
+        }
+    }
+    inicializarColaCircular(); // Crear los slots al cargar
+
+    // Eventos Cola Circular
+    btnEncolarCircular.addEventListener('click', () => {
+        const valor = inputCircular.value;
+        if (valor) {
+            encolarCircular(valor);
+            inputCircular.value = '';
+        }
+    });
+
+    btnDesencolarCircular.addEventListener('click', () => {
+        desencolarCircular();
+    });
+
+    function encolarCircular(valor) {
+        // 1. Checar Overflow
+        if ((finalCircular + 1) % MAX_COLA_CIRCULAR === frenteCircular) {
+            mostrarMensajeCola(msjCircular, '¡Desbordamiento! Cola circular llena.', 'error-overflow');
+            return;
+        }
+        // 2. Checar si es el primer elemento
+        if (frenteCircular === -1) {
+            frenteCircular = 0;
+        }
+        // 3. Mover 'final' y encolar
+        finalCircular = (finalCircular + 1) % MAX_COLA_CIRCULAR;
+        colaCircular[finalCircular] = valor;
+        actualizarVisualCircular();
+    }
+
+    function desencolarCircular() {
+        // 1. Checar Underflow
+        if (frenteCircular === -1) {
+            mostrarMensajeCola(msjCircular, '¡Subdesbordamiento! Cola circular vacía.', 'error-underflow');
+            return;
+        }
+        // 2. Sacar el valor (y marcar como null)
+        colaCircular[frenteCircular] = null;
+        // 3. Checar si era el último elemento
+        if (frenteCircular === finalCircular) {
+            frenteCircular = -1;
+            finalCircular = -1;
+        } else {
+            // 4. Mover 'frente'
+            frenteCircular = (frenteCircular + 1) % MAX_COLA_CIRCULAR;
+        }
+        actualizarVisualCircular();
+    }
+
+    function actualizarVisualCircular() {
+        mostrarMensajeCola(msjCircular, '', ''); // Limpiar mensajes
+
+        for (let i = 0; i < MAX_COLA_CIRCULAR; i++) {
+            const slot = slotsCirculares[i];
+            const valor = colaCircular[i];
+            slot.innerHTML = ''; // Limpiar indicadores y texto
+            slot.innerText = valor || '';
+
+            // Añadir/Quitar clase 'filled'
+            if (valor !== null) {
+                slot.classList.add('filled');
+            } else {
+                slot.classList.remove('filled');
+            }
+
+            // Añadir indicadores
+            if (i === frenteCircular) {
+                const frenteTag = document.createElement('span');
+                frenteTag.className = 'indicador-frente';
+                frenteTag.innerText = 'F';
+                slot.appendChild(frenteTag);
+            }
+            if (i === finalCircular) {
+                const finalTag = document.createElement('span');
+                finalTag.className = 'indicador-final';
+                finalTag.innerText = 'R';
+                slot.appendChild(finalTag);
+            }
+        }
+
+        // Actualizar info
+        infoCircular.innerText = `Frente: ${frenteCircular} | Final: ${finalCircular}`;
+    }
+
+    // Función auxiliar para mensajes de colas (evita conflicto con la de pila)
+    function mostrarMensajeCola(elemento, texto, clase) {
+        elemento.innerText = texto;
+        elemento.className = 'cola-mensajes ' + clase; // Asigna la clase de error
+    }
+
+    // --- FIN: LÓGICA DE COLAS (AÑADIDA) ---
 
   </script>
 </body>
