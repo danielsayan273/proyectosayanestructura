@@ -497,7 +497,7 @@
             border: 1px solid var(--azul);
         }
 
-        /* --- ESTILOS DE LA ANIMACIÓN DEL ÁRBOL --- */
+        /* --- ESTILOS DE LA ANIMACIÓN DEL ÁRBOL (CORREGIDOS) --- */
         .tree-controls {
             display: flex;
             flex-wrap: wrap;
@@ -542,7 +542,7 @@
             overflow: auto;
             position: relative;
             background-color: #fcfcfc;
-            flex-grow: 1; /* Permite que ocupe el espacio principal */
+            flex-grow: 1;
         }
 
         #node-detail-panel {
@@ -582,10 +582,10 @@
             position: relative;
             z-index: 2;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            cursor: pointer; /* Lo hacemos clickeable */
+            cursor: pointer;
         }
         .node-value.active-node {
-             background-color: #f39c12; /* Naranja para el nodo seleccionado */
+             background-color: #f39c12;
              border-color: #e67e22;
              transform: scale(1.05);
         }
@@ -601,35 +601,39 @@
         .node-children {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
+            /* Se establece el espacio total entre niveles */
+            margin-top: 30px; 
         }
         .node-child-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* AUMENTO DEL ESPACIADO HORIZONTAL para mejor visualización */
-            margin: 0 50px;
+            /* ESPACIADO HORIZONTAL para separación */
+            margin: 0 30px; 
             position: relative;
+            min-width: 40px; 
         }
 
-        /* --- Estilos de Líneas de Conexión --- */
+        /* --- Estilos de Líneas de Conexión (Simplificadas y Estables) --- */
 
         .line-vertical-left, .line-vertical-right {
             position: absolute;
             width: 2px;
-            height: 30px; /* Longitud de las líneas inclinadas */
+            /* Longitud de las líneas (separación visual entre niveles) */
+            height: 30px; 
             background-color: #7f8c8d;
             top: 40px; /* Inicia desde el borde inferior del nodo */
             transform-origin: top;
             z-index: 1;
+            
+            /* Usamos rotación para simular la inclinación */
+            left: 50%;
         }
         .line-vertical-left {
-            left: 50%;
-            transform: translateX(-50%) rotate(45deg);
+            transform: translateX(-50%) rotate(30deg); /* Menos inclinado */
         }
         .line-vertical-right {
-            left: 50%;
-            transform: translateX(-50%) rotate(-45deg);
+            transform: translateX(-50%) rotate(-30deg); /* Menos inclinado */
         }
 
         .tree-info {
@@ -1304,7 +1308,7 @@ function factorial(n) {
                     }
                 };
                 traversal(node);
-                return `[${result.join(', ')}]`;
+                return `${result.join(', ')}`;
             }
 
             inOrder(node, result = []) {
@@ -1375,7 +1379,7 @@ function factorial(n) {
         const infoEstructura = document.getElementById('info-estructura');
         const infoEstructuraDetalle = document.getElementById('info-estructura-detalle');
 
-        // *** NUEVA FUNCIÓN: Muestra la información detallada del nodo ***
+        // *** FUNCIÓN: Muestra la información detallada del nodo ***
         function displayNodeInfo(node) {
             // Quitar clase activa del nodo anterior
             if (activeNodeElement) {
@@ -1401,17 +1405,17 @@ function factorial(n) {
             detailOrden.innerHTML = `Orden/Grado: <strong>2 / ${grado}</strong>`;
             
             // Mostrar subárboles (usando pre-orden para representación)
-            detailSubarbolIzq.innerHTML = `Subárbol Izquierdo: <strong>${node.left ? abb.getTraversalString(node.left, 'pre') : '(vacío)'}</strong>`;
-            detailSubarbolDer.innerHTML = `Subárbol Derecho: <strong>${node.right ? abb.getTraversalString(node.right, 'pre') : '(vacío)'}</strong>`;
+            detailSubarbolIzq.innerHTML = `Subárbol Izquierdo: [<strong>${node.left ? abb.getTraversalString(node.left, 'pre') : 'vacío'}</strong>]`;
+            detailSubarbolDer.innerHTML = `Subárbol Derecho: [<strong>${node.right ? abb.getTraversalString(node.right, 'pre') : 'vacío'}</strong>]`;
         }
 
 
-        // Función Recursiva para dibujar el árbol (CORREGIDA la lógica de líneas)
+        // Función Recursiva para dibujar el árbol (Visualización estable)
         function drawTree(node) {
             if (node === null) {
+                // Devolvemos un elemento para mantener el espaciado
                 const emptyWrapper = document.createElement('div');
                 emptyWrapper.className = 'node-child-wrapper';
-                emptyWrapper.style.minWidth = '40px'; // Mantiene espaciado para hijos inexistentes
                 return emptyWrapper; 
             }
 
@@ -1438,26 +1442,43 @@ function factorial(n) {
             const hasLeft = node.left !== null;
             const hasRight = node.right !== null;
 
-            if (hasLeft || hasRight) {
-                // Líneas de conexión inclinadas (Van dentro del nodo-value)
-                if (hasLeft) {
-                    const lineLeft = document.createElement('div');
-                    lineLeft.className = 'line-vertical-left';
-                    nodeDiv.appendChild(lineLeft);
-                }
+            // Crear wrappers para los hijos
+            const leftWrapper = document.createElement('div');
+            leftWrapper.className = 'node-child-wrapper';
+            
+            const rightWrapper = document.createElement('div');
+            rightWrapper.className = 'node-child-wrapper';
 
-                if (hasRight) {
-                    const lineRight = document.createElement('div');
-                    lineRight.className = 'line-vertical-right';
-                    nodeDiv.appendChild(lineRight);
-                }
-                
-                // Añadir hijos al contenedor
-                childrenContainer.appendChild(leftChild);
-                childrenContainer.appendChild(rightChild);
-                
+            if (node.left) {
+                // Adjuntamos la visualización del subárbol izquierdo al wrapper
+                leftWrapper.appendChild(leftChild); 
+                // Línea de conexión al hijo izquierdo (va dentro del nodo padre)
+                const lineLeft = document.createElement('div');
+                lineLeft.className = 'line-vertical-left';
+                nodeDiv.appendChild(lineLeft);
+            } else {
+                // Si no hay hijo, insertamos el dummy wrapper para mantener el espaciado
+                leftWrapper.appendChild(leftChild);
+            }
+
+            if (node.right) {
+                // Adjuntamos la visualización del subárbol derecho al wrapper
+                rightWrapper.appendChild(rightChild); 
+                // Línea de conexión al hijo derecho (va dentro del nodo padre)
+                const lineRight = document.createElement('div');
+                lineRight.className = 'line-vertical-right';
+                nodeDiv.appendChild(lineRight);
+            } else {
+                 // Si no hay hijo, insertamos el dummy wrapper para mantener el espaciado
+                rightWrapper.appendChild(rightChild);
+            }
+            
+            if (hasLeft || hasRight) {
+                childrenContainer.appendChild(leftWrapper);
+                childrenContainer.appendChild(rightWrapper);
                 container.appendChild(childrenContainer);
             }
+            
             return container;
         }
 
