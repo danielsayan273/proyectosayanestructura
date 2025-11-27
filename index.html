@@ -1,977 +1,1473 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Estructuras de Datos</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estructuras de Datos</title>
 
-  <style>
-    :root {
-      --azul: #059669;
-      --morado: #047857;
-      --rosa: #14b8a6;
-      --verde: #65a30d;
-      --fondo: #ecfdf5;
-      --blanco: #ffffff;
-    }
+    <style>
+        :root {
+            --azul: #059669;
+            --morado: #047857;
+            --rosa: #14b8a6;
+            --verde: #65a30d;
+            --fondo: #ecfdf5;
+            --blanco: #ffffff;
+        }
 
-    body {
-      font-family: "Poppins", sans-serif;
-      margin: 0;
-      background: var(--fondo);
-      color: #333;
-      overflow-x: hidden;
-      background: linear-gradient(120deg, #3b82f6, #06b6d4, #10b981);
-      background-attachment: fixed;
-    }
+        body {
+            font-family: "Poppins", sans-serif;
+            margin: 0;
+            background: var(--fondo);
+            color: #333;
+            overflow-x: hidden;
+            background: linear-gradient(120deg, #3b82f6, #06b6d4, #10b981);
+            background-attachment: fixed;
+        }
 
-    header {
-      text-align: center;
-      background: linear-gradient(135deg, var(--azul), var(--morado));
-      color: white;
-      padding: 50px 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
+        header {
+            text-align: center;
+            background: linear-gradient(135deg, var(--azul), var(--morado));
+            color: white;
+            padding: 50px 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
 
-    header h1 { margin: 0; font-size: 2.6rem; }
-    header p { font-size: 1.1rem; opacity: 0.9; }
+        header h1 { margin: 0; font-size: 2.6rem; }
+        header p { font-size: 1.1rem; opacity: 0.9; }
 
-    .navbar {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 30px;
-      display: inline-block;
-      padding: 10px 25px;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
+        .navbar {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            display: inline-block;
+            padding: 10px 25px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
 
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 30px;
-      margin: 0;
-      padding: 0;
-    }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
 
-    .nav-links a {
-      color: #fff;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
+        .nav-links a {
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
 
-    .nav-links a:hover {
-      color: var(--verde);
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-    }
+        .nav-links a:hover {
+            color: var(--verde);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        }
 
-    /* CARRUSEL */
-    .carrusel {
-      position: relative;
-      max-width: 1000px;
-      margin: 50px auto;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 25px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      padding: 0 60px;
-    }
+        /* CARRUSEL */
+        .carrusel {
+            position: relative;
+            max-width: 1000px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 0 60px;
+        }
 
-    .slide {
-      display: none;
-      padding: 40px;
-      animation: fade 0.5s ease-in-out;
-    }
+        .slide {
+            display: none;
+            padding: 40px;
+            animation: fade 0.5s ease-in-out;
+        }
 
-    .slide.active { display: block; }
+        .slide.active { display: block; }
 
-    @keyframes fade {
-      from { opacity: 0; transform: translateX(20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
+        @keyframes fade {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
 
-    .slide h2 {
-      font-size: 1.8rem;
-      background: linear-gradient(90deg, var(--azul), var(--morado));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 10px;
-    }
+        .slide h2 {
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--azul), var(--morado));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
 
-    .slide p, .slide ul {
-      line-height: 1.6;
-      font-size: 1rem;
-    }
+        .slide p, .slide ul {
+            line-height: 1.6;
+            font-size: 1rem;
+        }
 
-    .slide .imagen-ejemplo {
-      width: 100%;
-      max-width: 400px;
-      margin: 20px auto;
-      border-radius: 15px;
-      border: 2px dashed var(--azul);
-      display: block;
-    }
+        .slide .imagen-ejemplo {
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            border-radius: 15px;
+            border: 2px dashed var(--azul);
+            display: block;
+        }
 
-    .boton {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: linear-gradient(135deg, var(--morado), var(--rosa));
-      color: white;
-      border: none;
-      padding: 14px 20px;
-      border-radius: 50%;
-      font-size: 24px;
-      cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
+        .boton {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, var(--morado), var(--rosa));
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
 
-    .boton:hover {
-      transform: translateY(-50%) scale(1.1);
-      background: linear-gradient(135deg, var(--rosa), var(--verde));
-    }
+        .boton:hover {
+            transform: translateY(-50%) scale(1.1);
+            background: linear-gradient(135deg, var(--rosa), var(--verde));
+        }
 
-    #prev { left: 15px; }
-    #next { right: 15px; }
+        #prev { left: 15px; }
+        #next { right: 15px; }
 
-    section {
-      max-width: 1000px;
-      margin: 60px auto;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 25px;
-      padding: 40px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    }
+        section {
+            max-width: 1000px;
+            margin: 60px auto;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
 
-    section h2 {
-      font-size: 2rem;
-      background: linear-gradient(90deg, var(--verde), var(--azul));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 15px;
-    }
+        section h2 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, var(--verde), var(--azul));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
 
-    .grid-tipos {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-    }
+        .grid-tipos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
 
-    .tipo-card {
-      background: linear-gradient(135deg, #ffffff, #f1f5f9);
-      border-radius: 20px;
-      padding: 25px;
-      text-align: center;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
+        .tipo-card {
+            background: linear-gradient(135deg, #ffffff, #f1f5f9);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
 
-    .tipo-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
-    }
+        .tipo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        }
 
-    .tipo-card h3 { color: var(--morado); margin-bottom: 10px; }
-    .tipo-card p { font-size: 0.95rem; }
-    .mini-img {
-      width: 100%;
-      height: 150px;
-      border: 3px dashed var(--azul);
-      border-radius: 10px;
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-style: italic;
-      color: #666;
-    }
-    .mini-img img{
-      width: 100%;
-      height: 130px;
-      border-radius: 10px;
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-style: italic;
-      color: #666;
-  _}
-.grid-arreglos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
-  margin-top: 40px;
-}
+        .tipo-card h3 { color: var(--morado); margin-bottom: 10px; }
+        .tipo-card p { font-size: 0.95rem; }
+        .mini-img {
+            width: 100%;
+            height: 150px;
+            border: 3px dashed var(--azul);
+            border-radius: 10px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            color: #666;
+        }
+        .mini-img img{
+            width: 100%;
+            height: 130px;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            color: #666;
+        } 
 
-.card {
-  background: linear-gradient(135deg, #ffffff, #f1f5f9);
-  border-radius: 20px;
-  padding: 25px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
+        .grid-arreglos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
 
-.card:hover {
-  transform: translateY(-5px);
-}
+        .card {
+            background: linear-gradient(135deg, #ffffff, #f1f5f9);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
 
-.card h3 {
-  color: var(--morado);
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
-.espacio3d {
-  width: 100%;
-  border: 2px dashed var(--azul);
-  border-radius: 15px;
-  margin-top: 15px;
-  overflow: hidden; /* Evita que la imagen se salga del borde */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+        .card h3 {
+            color: var(--morado);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
 
-.espacio3d img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Hace que la imagen se recorte para llenar el espacio sin deformarse */
-  border-radius: 15px;
-}
+        .espacio3d {
+            width: 100%;
+            border: 2px dashed var(--azul);
+            border-radius: 15px;
+            margin-top: 15px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .btn-ar {
-      margin-top: 15px;
-      display: inline-block;
-      padding: 10px 18px;
-      background: linear-gradient(90deg, var(--azul), var(--morado));
-      color: white;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.3s;
-    }
+        .espacio3d img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
 
-    .btn-ar:hover { background: linear-gradient(90deg, var(--morado), var(--rosa)); transform: scale(1.05); }
+        .btn-ar {
+            margin-top: 15px;
+            display: inline-block;
+            padding: 10px 18px;
+            background: linear-gradient(90deg, var(--azul), var(--morado));
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
 
-    footer {
-      text-align: center;
-      background: linear-gradient(135deg, var(--azul), var(--morado));
-      color: white;
-      padding: 25px;
-      margin-top: 60px;
-      font-size: 0.9rem;
-    }
+        .btn-ar:hover { background: linear-gradient(90deg, var(--morado), var(--rosa)); transform: scale(1.05); }
 
-    /* --- ESTILOS PILA INTERACTIVA (EXISTENTE) --- */
-    .pila-interactiva-contenedor {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-    
-    .controles {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 10px;
-    }
+        footer {
+            text-align: center;
+            background: linear-gradient(135deg, var(--azul), var(--morado));
+            color: white;
+            padding: 25px;
+            margin-top: 60px;
+            font-size: 0.9rem;
+        }
 
-    .controles input {
-        border: 2px solid var(--azul);
-        border-radius: 8px;
-        padding: 8px;
-    }
-    .controles button {
-        background: linear-gradient(90deg, var(--azul), var(--morado));
-        color: white;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: transform 0.2s;
-    }
-    .controles button:hover {
-        transform: scale(1.05);
-        background: linear-gradient(90deg, var(--morado), var(--rosa));
-    }
+        /* --- ESTILOS PILA INTERACTIVA --- */
+        .pila-interactiva-contenedor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .controles {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
 
-    #pila-contenedor {
-        border: 3px solid var(--azul);
-        width: 200px;
-        height: 300px;
-        background: #ffffff;
-        padding: 5px;
-        border-radius: 10px;
-    }
+        .controles input {
+            border: 2px solid var(--azul);
+            border-radius: 8px;
+            padding: 8px;
+        }
+        .controles button {
+            background: linear-gradient(90deg, var(--azul), var(--morado));
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .controles button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(90deg, var(--morado), var(--rosa));
+        }
 
-    #pila-visual {
-        display: flex;
-        flex-direction: column-reverse; /* ¡La magia está aquí! */
-        align-items: center;
-        height: 100%;
-        width: 100%;
-    }
+        #pila-contenedor {
+            border: 3px solid var(--azul);
+            width: 200px;
+            height: 300px;
+            background: #ffffff;
+            padding: 5px;
+            border-radius: 10px;
+        }
 
-    .item-pila {
-        background-color: #3498db;
-        color: white;
-        width: 90%;
-        text-align: center;
-        padding: 10px 0;
-        margin-top: 5px; /* Separación entre items */
-        border: 1px solid #2980b9;
-        font-weight: bold;
-        border-radius: 5px;
-    }
+        #pila-visual {
+            display: flex;
+            flex-direction: column-reverse; /* LIFO */
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
 
-    .item-pila.tope {
-        background-color: #e74c3c; /* Color diferente para el tope */
-        border: 2px solid #c0392b;
-    }
+        .item-pila {
+            background-color: #3498db;
+            color: white;
+            width: 90%;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 5px;
+            border: 1px solid #2980b9;
+            font-weight: bold;
+            border-radius: 5px;
+        }
 
-    #mensajes {
-        min-height: 1.2em;
-        font-weight: bold;
-    }
-    #info-tope {
-        font-weight: bold;
-        color: var(--morado);
-    }
+        .item-pila.tope {
+            background-color: #e74c3c;
+            border: 2px solid #c0392b;
+        }
 
-    .error-overflow {
-        color: #c0392b; /* Rojo fuerte */
-    }
+        #mensajes {
+            min-height: 1.2em;
+            font-weight: bold;
+        }
+        #info-tope {
+            font-weight: bold;
+            color: var(--morado);
+        }
 
-    .error-underflow {
-        color: #e67e22; /* Naranja */
-    }
+        .error-overflow {
+            color: #c0392b; /* Rojo fuerte */
+        }
 
-    /* --- INICIO: ESTILOS PARA COLAS (AÑADIDOS) --- */
-    .colas-contenedor-principal {
-        display: flex;
-        flex-wrap: wrap; /* Para que en pantallas pequeñas se ponga uno debajo del otro */
-        gap: 25px;
-    }
+        .error-underflow {
+            color: #e67e22; /* Naranja */
+        }
 
-    .cola-mitad {
-        flex: 1; /* Cada mitad toma el mismo espacio */
-        min-width: 300px; /* Ancho mínimo antes de envolverse */
-        background: #ffffff;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
+        /* --- ESTILOS PARA COLAS --- */
+        .colas-contenedor-principal {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
 
-    .cola-mitad h3 {
-        color: var(--morado);
-        text-align: center;
-        margin-top: 0;
-    }
+        .cola-mitad {
+            flex: 1;
+            min-width: 300px;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
 
-    .controles-cola {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 15px;
-    }
+        .cola-mitad h3 {
+            color: var(--morado);
+            text-align: center;
+            margin-top: 0;
+        }
 
-    .controles-cola input {
-        border: 2px solid var(--azul);
-        border-radius: 8px;
-        padding: 8px;
-        max-width: 100px; /* Ajuste para que quepa bien */
-    }
+        .controles-cola {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
 
-    .controles-cola button {
-        background: linear-gradient(90deg, var(--azul), var(--morado));
-        color: white;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: transform 0.2s;
-    }
-    .controles-cola button:hover {
-        transform: scale(1.05);
-        background: linear-gradient(90deg, var(--morado), var(--rosa));
-    }
+        .controles-cola input {
+            border: 2px solid var(--azul);
+            border-radius: 8px;
+            padding: 8px;
+            max-width: 100px;
+        }
 
-    .cola-visual-contenedor {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 3px dashed var(--azul);
-        border-radius: 10px;
-        background: #f9f9f9;
-        padding: 10px;
-        min-height: 70px;
-        gap: 5px;
-    }
+        .controles-cola button {
+            background: linear-gradient(90deg, var(--azul), var(--morado));
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .controles-cola button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(90deg, var(--morado), var(--rosa));
+        }
 
-    .item-cola {
-        background-color: #3498db;
-        color: white;
-        width: 45px;
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        border-radius: 5px;
-        border: 1px solid #2980b9;
-        position: relative;
-        flex-shrink: 0; /* Evita que se encojan */
-    }
-    
-    /* Estilos para los slots de la cola circular */
-    .slot-cola-circular {
-        background-color: #ecf0f1;
-        border: 1px dashed #bdc3c7;
-        color: #7f8c8d;
-        width: 45px;
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        border-radius: 5px;
-        position: relative;
-        flex-shrink: 0;
-    }
-    .slot-cola-circular.filled {
-        background-color: #3498db;
-        color: white;
-        border-color: #2980b9;
-    }
+        .cola-visual-contenedor {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            border: 3px dashed var(--azul);
+            border-radius: 10px;
+            background: #f9f9f9;
+            padding: 10px;
+            min-height: 70px;
+            gap: 5px;
+            overflow-x: auto;
+        }
 
-    /* Estilos para los punteros (Frente y Final) */
-    .indicador-frente, .indicador-final {
-        position: absolute;
-        bottom: -20px; /* Debajo del item */
-        font-size: 0.8rem;
-        font-weight: bold;
-        border-radius: 5px;
-  *     padding: 1px 4px;
-    }
-    .indicador-frente {
-        background: #e74c3c;
-        color: white;
-    }
-    .indicador-final {
-        background: #2ecc71;
-        color: white;
-    }
-    
-    .cola-info {
-        text-align: center;
-        margin-top: 25px; /* Espacio extra para los indicadores F/R */
-        font-weight: bold;
-        color: var(--morado);
-        min-height: 1.2em;
-    }
-    .cola-mensajes {
-        text-align: center;
-        min-height: 1.2em;
-        font-weight: bold;
-        margin-top: 5px;
-    }
-    /* --- FIN: ESTILOS PARA COLAS (AÑADIDOS) --- */
+        .item-cola {
+            background-color: #3498db;
+            color: white;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 5px;
+            border: 1px solid #2980b9;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .slot-cola-circular {
+            background-color: #ecf0f1;
+            border: 1px dashed #bdc3c7;
+            color: #7f8c8d;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 5px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .slot-cola-circular.filled {
+            background-color: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
 
-  </style>
+        .indicador-frente, .indicador-final {
+            position: absolute;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 1px 4px;
+            
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .indicador-frente {
+            background: #e74c3c;
+            color: white;
+            bottom: -20px;
+        }
+
+        .indicador-final {
+            background: #2ecc71;
+            color: white;
+            top: -20px;
+        }
+
+        /* --- ESTILOS PARA ARBOLES --- */
+        .arbol-conceptos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .arbol-info-card {
+            background: #f8fafc;
+            padding: 15px;
+            border-left: 5px solid var(--rosa);
+            border-radius: 5px;
+        }
+        .arbol-info-card h4 {
+            color: var(--morado);
+            margin-top: 0;
+            font-size: 1.1rem;
+        }
+        .arbol-recorridos {
+            margin-top: 30px;
+            padding: 20px;
+            background: #ecfdf5;
+            border-radius: 10px;
+            border: 1px solid var(--azul);
+        }
+
+        /* --- ESTILOS DE LA ANIMACIÓN DEL ÁRBOL --- */
+        .tree-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tree-controls input {
+            border: 2px solid var(--azul);
+            border-radius: 8px;
+            padding: 8px;
+            max-width: 100px;
+        }
+        .tree-controls button {
+            background: linear-gradient(90deg, var(--azul), var(--morado));
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .tree-controls button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(90deg, var(--morado), var(--rosa));
+        }
+
+        #tree-visualization-container {
+            min-height: 300px;
+            border: 2px dashed var(--verde);
+            border-radius: 10px;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow: auto;
+            position: relative;
+            background-color: #fcfcfc;
+        }
+
+        .node-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .node-value {
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid #2980b9;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 2;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            cursor: default;
+        }
+        .node-value.highlight {
+            background-color: #e74c3c;
+            transform: scale(1.1);
+            border-color: #c0392b;
+        }
+        .node-value.visited {
+            background-color: #2ecc71;
+            border-color: #27ae60;
+        }
+        .node-children {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .node-child-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Controla el espaciado horizontal de los hijos */
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .line {
+            position: absolute;
+            background-color: #7f8c8d;
+            z-index: 1;
+        }
+        .line-parent {
+            position: absolute;
+            height: 20px;
+            width: 2px;
+            background-color: #7f8c8d;
+            top: 42px; /* Debajo del nodo */
+            z-index: 1;
+        }
+        .line-horizontal {
+            position: absolute;
+            height: 2px;
+            top: 62px; /* Línea de conexión horizontal */
+            z-index: 1;
+        }
+        .line-vertical-left {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background-color: #7f8c8d;
+            top: 62px;
+            left: 0;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        .line-vertical-right {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background-color: #7f8c8d;
+            top: 62px;
+            right: 0;
+            transform: translateX(50%);
+            z-index: 1;
+        }
+
+        .tree-info {
+            margin-top: 20px;
+            background: #f8fafc;
+            padding: 15px;
+            border-left: 5px solid var(--azul);
+            border-radius: 5px;
+        }
+        .tree-info h4 {
+            color: var(--verde);
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+        .tree-info p {
+            margin: 0 0 5px 0;
+            font-size: 0.95rem;
+        }
+    </style>
 </head>
 
 <body>
-  <header>
-    <h1>Estructuras de Datos Orientadas a Objetos</h1>
-    <p>Explora los conceptos, clasificación e identificación con ejemplos visuales</p>
-    <nav class="navbar">
-      <ul class="nav-links">
-        <li><a href="#tipos">Tipos de estructuras</a></li>
-        <li><a href="#tipodearreglo">Tipos de arreglos</a></li>
-      </ul>
-    </nav>
-  </header>
+    <header>
+        <h1>Estructuras de Datos Orientadas a Objetos</h1>
+        <p>Explora los conceptos, clasificación e identificación con ejemplos visuales</p>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="#tipos">Tipos</a></li>
+                <li><a href="#arreglos">Arreglos</a></li>
+                <li><a href="#pila-interactiva">Pilas</a></li>
+                <li><a href="#colas-interactivas">Colas</a></li>
+                <li><a href="#arbol-binario">Árboles</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <div class="carrusel">
-    <button class="boton" id="prev">&#10094;</button>
+    <div class="carrusel">
+        <button class="boton" id="prev">&#10094;</button>
 
-    <div class="slide active">
-      <h2>Conceptos Básicos</h2>
-      <p>    Las estructuras de datos son formas organizadas de almacenar y gestionar información para usarla 
-        de manera eficiente. En la programación orientada a objetos, permiten representar datos mediante 
-        clases y objetos, facilitando el acceso, la modificación y el manejo lógico de la información. </p>
-      <img src="conceptobasico.png" alt="Ejemplo concepto" class="imagen-ejemplo">
-    </div>
-
-    <div class="slide">
-      <h2>Clasificación</h2>
-      <ul>
-        <li><strong>Lineales:</strong> Arreglos, Listas, Pilas, Colas.</li>
-        <li><strong>No lineales:</strong> Árboles, Grafos.</li>
-      </ul>
-      <img src="clasificacion.png" alt="Ejemplo clasificación" class="imagen-ejemplo">
-    </div>
-
-    <div class="slide">
-      <h2>Identificación</h2>
-      <ul>
-        <li><strong>Pilas:</strong> LIFO (Último en entrar, primero en salir).</li>
-        <li><strong>Colas:</strong> FIFO (Primero en entrar, primero en salir).</li>
-        <li><strong>Árboles:</strong> Relación jerárquica entre nodos.</li>
-      </ul>
-      <img src="indetificacion.avif" alt="Ejemplo identificación" class="imagen-ejemplo">
-    </div>
-
-    <div class="slide">
-      <h2>Recursividad</h2>
-      <p>La recursividad es cuando una función se llama a sí misma para resolver un problema más pequeño.</p>
-      <code>
-function factorial(n) {
-  if (n === 0) return 1;
-  return n * factorial(n - 1);
-}
-      </code>
-      <img src="recursividad.svg" alt="Ejemplo recursividad" class="imagen-ejemplo">
-  _</div>
-
-    <button class="boton" id="next">&#10095;</button>
-  </div>
-
-  <section id="tipos">
-    <h2>Tipos de Estructuras de Datos</h2>
-    <div class="grid-tipos">
-      <div class="tipo-card">
-        <h3>Arreglos</h3>
-        <p>Conjunto de elementos del mismo tipo almacenados en posiciones contiguas de memoria.</p>
-        <div class="mini-img"><img src="arreglos.png"></div>
-      </div>
-
-      <div class="tipo-card">
-        <h3>Pilas</h3>
-        <p>Estructura LIFO donde el último elemento en entrar es el primero en salir.</p>
-        <div class="mini-img"><img src="pilas.png"></div>
-      </div>
-
-      <div class="tipo-card">
-        <h3>Colas</h3>
-        <p>Estructura FIFO donde el primer elemento en entrar es el primero en salir.</p>
-        <div class="mini-img"><img src="Colas.png"></div>
-      </div>
-
-      <div class="tipo-card">
-        <h3>Listas Enlazadas</h3>
-        <p>Conjunto de nodos que contienen datos y una referencia al siguiente nodo.</p>
-        <div class="mini-img"><img src="tiposdelistas.png"></div>
-      </div>
-
-      <div class="tipo-card">
-        <h3>Árboles</h3>
-        <p>Estructura jerárquica donde cada nodo puede tener hijos, formando ramas.</p>
-        <div class="mini-img"><img src="arbolEjemplo.png"></div>
-      </div>
-
-      <div class="tipo-card">
-        <h3>Recursividad</h3>
-        <p>Técnica donde una función se llama a sí misma para resolver subproblemas.</p>
-        <div class="mini-img"><img src="recursividad.svg"></div>
-      </div>
-    </div>
-  </section>
-   <section>
-    <h2 id="arreglos">Arreglos</h2>
-    <p>
-      Los arreglos son estructuras de datos <strong>lineales y estáticas</strong> que almacenan elementos
-      del mismo tipo en posiciones contiguas de memoria.
-    </p>
-    <ul>
-      <li><strong>Unidimensional:</strong> Vector simple. Ejemplo: [1, 2, 3, 4]</li>
-      <li><strong>Bidimensional:</strong> Matriz. Ejemplo: [[1, 2], [3, 4]]</li>
-      <li><strong>Tridimensional:</strong> Matriz de Matrices.Ejemplo [1][2][3]</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2 id="tipodearreglo">Tipos de Arreglos</h2>
-    <div class="grid-arreglos">
-      <div class="card">
-        <h3>Unidimensional</h3>
-        <p>Es una lista lineal de elementos del mismo tipo. Se usa para almacenar datos simples, como notas o edades.</p>
-        <div class="espacio3d"><a href="https://mywebar.com/p/Project_2_mc2e2rnjmk"><img src="unidimensional.png" ></a></div>
-        <a href="https://sketchfab.com/models/0da5c2d893f449acbf2fb7ea835da51e/embed?autostart=1&cardboard=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0" class="btn-ar">Ver en Realidad Aumentada</a>
-      </div>
-
-      <div class="card">
-        <h3>Bidimensional</h3>
-        <p>Representa una tabla o matriz. Se usa en cálculos matemáticos, gráficos o estructuras tabulares.</p>
-        <div class="espacio3d"><a  href="https://mywebar.com/p/Project_1_geax7r8erl"><img src="Bidimensional.png"></a></div>
-        <a href="https://sketchfab.com/models/c23783f7057a488ca104632c73ebbfe2/embed?autostart=1&cardboard=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0" class="btn-ar">Ver en Realidad Aumentada</a>
-      </div>
-
-      <div class="card">
-        <h3>Tridimensional</h3>
-        <p>Extiende el concepto de matriz a tres dimensiones. Ideal para representar espacios, coordenadas o cubos de datos.</p>
-        <div class="espacio3d"><a href="https://mywebar.com/p/Project_0_to0dyqz2gl"><img src="Tridimensional.png"></a></div>
-        <a href="https://sketchfab.com/models/12129ce7a5d7429291714ae06150b42c/embed?autostart=1&cardboard=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0" class="btn-ar">Ver en Realidad Aumentada</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="pila-interactiva">
-      <h2>Animación de Pila Interactiva (LIFO)</h2>
-      <div class="pila-interactiva-contenedor">
-          <div class="controles">
-              <input type="text" id="valor-input" placeholder="Valor a añadir">
-              <button id="btn-push">Añadir</button>
-              <button id="btn-pop">Sacar</button>
-          </div>
-      
-          <div id="mensajes"></div>
-          <div id="info-tope">Tope: (vacío)</div>
-      
-          <div id="pila-contenedor">
-              <div id="pila-visual">
-                  </div>
-          </div>
-      </div>
-  </section>
- 
-  <section id="colas-interactivas">
-    <h2>Animación de Colas Interactivas (FIFO)</h2>
-    <div class="colas-contenedor-principal">
-      
-            <div class="cola-mitad" id="cola-simple-app">
-        <h3>Cola Simple</h3>
-        <div class="controles-cola">
-          <input type="text" id="valor-cola-simple" placeholder="Valor">
-          <button id="btn-encolar-simple">Encolar (Enqueue)</button>
-          <button id="btn-desencolar-simple">Desencolar (Dequeue)</button>
+        <div class="slide active">
+            <h2>Conceptos Básicos</h2>
+            <p>    Las estructuras de datos son formas organizadas de almacenar y gestionar información para usarla
+                de manera eficiente. En la programación orientada a objetos, permiten representar datos mediante
+                clases y objetos, facilitando el acceso, la modificación y el manejo lógico de la información. </p>
+            <img src="conceptobasico.png" alt="Ejemplo concepto" class="imagen-ejemplo">
         </div>
-        <div class="cola-visual-contenedor" id="cola-simple-visual">
-                  </div>
-        <div class="cola-mensajes" id="mensajes-cola-simple"></div>
-        <div class="cola-info" id="info-cola-simple">Frente: - | Final: -</div>
-      </div>
+
+        <div class="slide">
+            <h2>Clasificación</h2>
+            <ul>
+                <li><strong>Lineales:</strong> Arreglos, Listas, Pilas, Colas.</li>
+                <li><strong>No lineales:</strong> Árboles, Grafos.</li>
+            </ul>
+            <img src="clasificacion.png" alt="Ejemplo clasificación" class="imagen-ejemplo">
+        </div>
+
+        <div class="slide">
+            <h2>Identificación</h2>
+            <ul>
+                <li><strong>Pilas:</strong> LIFO (Último en entrar, primero en salir).</li>
+                <li><strong>Colas:</strong> FIFO (Primero en entrar, primero en salir).</li>
+                <li><strong>Árboles:</strong> Relación jerárquica entre nodos.</li>
+            </ul>
+            <img src="indetificacion.avif" alt="Ejemplo identificación" class="imagen-ejemplo">
+        </div>
+
+        <div class="slide">
+            <h2>Recursividad</h2>
+            <p>La recursividad es cuando una función se llama a sí misma para resolver un problema más pequeño.</p>
+            <code>
+function factorial(n) {
+    if (n === 0) return 1;
+    return n * factorial(n - 1);
+}
+            </code>
+            <img src="recursividad.svg" alt="Ejemplo recursividad" class="imagen-ejemplo">
+        </div>
+
+        <button class="boton" id="next">&#10095;</button>
+    </div>
+
+    <section id="tipos">
+        <h2>Tipos de Estructuras de Datos</h2>
+        <div class="grid-tipos">
+            <div class="tipo-card">
+                <h3>Arreglos</h3>
+                <p>Conjunto de elementos del mismo tipo almacenados en posiciones contiguas de memoria.</p>
+                <div class="mini-img"><img src="arreglos.png"></div>
+            </div>
+
+            <div class="tipo-card">
+                <h3>Pilas</h3>
+                <p>Estructura LIFO donde el último elemento en entrar es el primero en salir.</p>
+                <div class="mini-img"><img src="pilas.png"></div>
+            </div>
+
+            <div class="tipo-card">
+                <h3>Colas</h3>
+                <p>Estructura FIFO donde el primer elemento en entrar es el primero en salir.</p>
+                <div class="mini-img"><img src="Colas.png"></div>
+            </div>
+
+            <div class="tipo-card">
+                <h3>Listas Enlazadas</h3>
+                <p>Conjunto de nodos que contienen datos y una referencia al siguiente nodo.</p>
+                <div class="mini-img"><img src="tiposdelistas.png"></div>
+            </div>
+
+            <div class="tipo-card">
+                <h3>Árboles</h3>
+                <p>Estructura jerárquica donde cada nodo puede tener hijos, formando ramas.</p>
+                <div class="mini-img"><img src="arbolEjemplo.png"></div>
+            </div>
+
+            <div class="tipo-card">
+                <h3>Recursividad</h3>
+                <p>Técnica donde una función se llama a sí misma para resolver subproblemas.</p>
+                <div class="mini-img"><img src="recursividad.svg"></div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h2 id="arreglos">Arreglos</h2>
+        <p>
+            Los arreglos son estructuras de datos <strong>lineales y estáticas</strong> que almacenan elementos
+            del mismo tipo en posiciones contiguas de memoria.
+        </p>
+        <ul>
+            <li><strong>Unidimensional:</strong> Vector simple. Ejemplo: [1, 2, 3, 4]</li>
+            <li><strong>Bidimensional:</strong> Matriz. Ejemplo: [[1, 2], [3, 4]]</li>
+            <li><strong>Tridimensional:</strong> Matriz de Matrices.Ejemplo [1][2][3]</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 id="tipodearreglo">Tipos de Arreglos</h2>
+        <div class="grid-arreglos">
+            <div class="card">
+                <h3>Unidimensional</h3>
+                <p>Es una lista lineal de elementos del mismo tipo. Se usa para almacenar datos simples, como notas o edades.</p>
+                <div class="espacio3d"><a href="https://mywebar.com/p/Project_2_mc2e2rnjmk"><img src="unidimensional.png" ></a></div>
+                <a href="https://sketchfab.com/models/0da5c2d893f449acbf2fb7ea835da51e/embed?autostart=1&cardboard=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0" class="btn-ar">Ver en Realidad Aumentada</a>
+            </div>
+
+            <div class="card">
+                <h3>Bidimensional</h3>
+                <p>Representa una tabla o matriz. Se usa en cálculos matemáticos, gráficos o estructuras tabulares.</p>
+                <div class="espacio3d"><a  href="https://mywebar.com/p/Project_1_geax7r8erl"><img src="Bidimensional.png"></a></div>
+                <a href="https://sketchfab.com/models/c23783f7057a488ca104632c73ebbfe2/embed?autostart=1&cardboard=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0" class="btn-ar">Ver en Realidad Aumentada</a>
+            </div>
+
+            <div class="card">
+                <h3>Tridimensional</h3>
+                <p>Extiende el concepto de matriz a tres dimensiones. Ideal para representar espacios, coordenadas o cubos de datos.</p>
+                <div class="espacio3d"><a href="https://mywebar.com/p/Project_0_to0dyqz2gl"><img src="Tridimensional.png"></a></div>
+                <a href="https://sketchfab.com/models/12129ce7a5d7429291714ae06150b42c/embed?autostart=1&cardboard=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0" class="btn-ar">Ver en Realidad Aumentada</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="pila-interactiva">
+        <h2>Animación de Pila Interactiva (LIFO)</h2>
+        <div class="pila-interactiva-contenedor">
+            <div class="controles">
+                <input type="text" id="valor-input" placeholder="Valor a añadir">
+                <button id="btn-push">Añadir</button>
+                <button id="btn-pop">Sacar</button>
+            </div>
+        
+            <div id="mensajes"></div>
+            <div id="info-tope">Tope: (vacío)</div>
+        
+            <div id="pila-contenedor">
+                <div id="pila-visual">
+                    </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="colas-interactivas">
+        <h2>Animación de Colas Interactivas (FIFO)</h2>
+        <div class="colas-contenedor-principal">
+        
+            <div class="cola-mitad" id="cola-simple-app">
+                <h3>Cola Simple (Bloqueo al Desencolar)</h3>
+                <div class="controles-cola">
+                    <input type="text" id="valor-cola-simple" placeholder="Valor">
+                    <button id="btn-encolar-simple">Encolar (Enqueue)</button>
+                    <button id="btn-desencolar-simple">Desencolar (Dequeue)</button>
+                </div>
+                <div class="cola-visual-contenedor" id="cola-simple-visual">
+                    </div>
+                <div class="cola-mensajes" id="mensajes-cola-simple"></div>
+                <div class="cola-info" id="info-cola-simple">Frente: - | Final: -</div>
+            </div>
 
             <div class="cola-mitad" id="cola-circular-app">
-        <h3>Cola Circular</h3>
-        <div class="controles-cola">
-          <input type="text" id="valor-cola-circular" placeholder="Valor">
-          <button id="btn-encolar-circular">Encolar (Enqueue)</button>
-          <button id="btn-desencolar-circular">Desencolar (Dequeue)</button>
+                <h3>Cola Circular</h3>
+                <div class="controles-cola">
+                    <input type="text" id="valor-cola-circular" placeholder="Valor">
+                    <button id="btn-encolar-circular">Encolar (Enqueue)</button>
+                    <button id="btn-desencolar-circular">Desencolar (Dequeue)</button>
+                </div>
+                <div class="cola-visual-contenedor" id="cola-circular-visual">
+                    </div>
+                <div class="cola-mensajes" id="mensajes-cola-circular"></div>
+                <div class="cola-info" id="info-cola-circular">Frente: -1 | Final: -1</div>
+            </div>
+
         </div>
-        <div class="cola-visual-contenedor" id="cola-circular-visual">
-                  </div>
-        <div class="cola-mensajes" id="mensajes-cola-circular"></div>
-        <div class="cola-info" id="info-cola-circular">Frente: -1 | Final: -1</div>
-      </div>
+    </section>
+    
+    <section id="arbol-binario">
+        <h2>Árbol Binario de Búsqueda (ABB) 🌳</h2>
+        <p>Un ABB es una estructura de datos jerárquica donde, para cada nodo, todos los valores en su subárbol izquierdo son menores, y todos los valores en su subárbol derecho son mayores.</p>
+        
+        <div class="tree-controls">
+            <input type="number" id="valor-arbol" placeholder="Número (1-100)">
+            <button id="btn-insertar-arbol">Insertar Nodo</button>
+            <button id="btn-recorrer-arbol">Recorrer (Pre-orden)</button>
+        </div>
 
-    </div>
-  </section>
-  <footer>Daniel Francisco Valdovinos Castro DSM-41</footer>
+        <div id="tree-visualization-container">
+            </div>
 
-  <script>
-    // --- LÓGICA DEL CARRUSEL (Existente) ---
-    const slides = document.querySelectorAll('.slide');
-    let index = 0;
-    function mostrarSlide(nuevoIndex) {
-      slides[index].classList.remove('active');
-      index = (nuevoIndex + slides.length) % slides.length;
-      slides[index].classList.add('active');
-    }
-    document.getElementById('next').onclick = () => mostrarSlide(index + 1);
-    document.getElementById('prev').onclick = () => mostrarSlide(index - 1);
+        <div class="tree-info">
+            <h4>Información del Árbol</h4>
+            <p id="info-recorridos">Recorridos: In-orden: - | Pre-orden: - | Post-orden: -</p>
+            <p id="info-estructura">Raíz: - | Altura: - | Hojas: -</p>
+            <p id="info-estructura-detalle">Grado Máximo: - | Profundidad Máxima: -</p>
+        </div>
 
+        <div class="arbol-conceptos-grid">
+            <div class="arbol-info-card">
+                <h4>Raíz / Padre / Hojas</h4>
+                <p><strong>Raíz:</strong> El nodo superior. <strong>Padre:</strong> Nodo con hijos. <strong>Hojas:</strong> Nodos sin hijos (Grado 0).</p>
+            </div>
+            <div class="arbol-info-card">
+                <h4>Subárboles</h4>
+                <p>El conjunto de nodos y ramas que descienden de un hijo (izquierdo o derecho).</p>
+            </div>
+            <div class="arbol-info-card">
+                <h4>Nivel / Profundidad / Altura</h4>
+                <p><strong>Nivel/Profundidad:</strong> Distancia de un nodo a la raíz. <strong>Altura:</strong> Nivel máximo de las hojas.</p>
+            </div>
+            <div class="arbol-info-card">
+                <h4>Orden / Grado</h4>
+                <p><strong>Orden:</strong> 2 (Binario). <strong>Grado:</strong> Número de hijos directos de un nodo.</p>
+            </div>
+        </div>
 
-    // --- LÓGICA PILA INTERACTIVA (EXISTENTE) ---
+        <div class="arbol-recorridos">
+            <h3>Métodos de Recorrido</h3>
+            <ul>
+                <li><strong>In-orden (Izquierda -> Raíz -> Derecha):</strong> Lista los nodos ordenados (en ABB).</li>
+                <li><strong>Pre-orden (Raíz -> Izquierda -> Derecha):</strong> Se usa para clonar un árbol.</li>
+                <li><strong>Post-orden (Izquierda -> Derecha -> Raíz):</strong> Se usa para eliminar un árbol.</li>
+            </ul>
+        </div>
+    </section>
+    <footer>Daniel Francisco Valdovinos Castro DSM-41</footer>
 
-    // --- Configuración Inicial ---
-    const MAX_CAPACIDAD = 5; // Nuestra pila solo puede tener 5 elementos
-    let pila = []; // El arreglo que simula nuestra pila
-
-    // --- Referencias a elementos del DOM ---
-    const btnPush = document.getElementById('btn-push');
-    const btnPop = document.getElementById('btn-pop');
-    const inputValor = document.getElementById('valor-input');
-    const pilaVisual = document.getElementById('pila-visual');
-    const areaMensajes = document.getElementById('mensajes');
-    const infoTope = document.getElementById('info-tope');
-
-    // --- Event Listeners para los botones ---
-    btnPush.addEventListener('click', () => {
-        const valor = inputValor.value;
-        if (valor) {
-            hacerPush(valor);
-            inputValor.value = ''; // Limpiar input
+    <script>
+        // --- LÓGICA DEL CARRUSEL ---
+        const slides = document.querySelectorAll('.slide');
+        let index = 0;
+        function mostrarSlide(nuevoIndex) {
+            slides[index].classList.remove('active');
+            index = (nuevoIndex + slides.length) % slides.length;
+            slides[index].classList.add('active');
         }
-    });
+        document.getElementById('next').onclick = () => mostrarSlide(index + 1);
+        document.getElementById('prev').onclick = () => mostrarSlide(index - 1);
 
-    btnPop.addEventListener('click', () => {
-        hacerPop();
-    });
 
-    // --- Funciones de la Pila ---
+        // --- LÓGICA PILA INTERACTIVA ---
 
-    function hacerPush(valor) {
-        // 1. Detectar Desbordamiento (Overflow)
-        if (pila.length >= MAX_CAPACIDAD) {
-            mostrarMensaje('¡Desbordamiento! La pila está llena.', 'error-overflow');
-            return; // No hacemos nada más
-        }
+        // --- Configuración Inicial ---
+        const MAX_CAPACIDAD = 5;
+        let pila = [];
 
-        // 2. Añadir al arreglo (lógica)
-        pila.push(valor);
+        // --- Referencias a elementos del DOM ---
+        const btnPush = document.getElementById('btn-push');
+        const btnPop = document.getElementById('btn-pop');
+        const inputValor = document.getElementById('valor-input');
+        const pilaVisual = document.getElementById('pila-visual');
+        const areaMensajes = document.getElementById('mensajes');
+        const infoTope = document.getElementById('info-tope');
 
-        // 3. Actualizar la vista
-        actualizarVisualPila(); // Renombrada para evitar confusión
-    }
-
-    function hacerPop() {
-        // 1. Detectar Subdesbordamiento (Underflow)
-        if (pila.length === 0) {
-            mostrarMensaje('¡Subdesbordamiento! La pila está vacía.', 'error-underflow');
-            return; // No hacemos nada más
-        }
-
-        // 2. Quitar del arreglo (lógica)
-        pila.pop();
-
-        // 3. Actualizar la vista
-        actualizarVisualPila(); // Renombrada para evitar confusión
-    }
-
-    // --- Funciones Auxiliares ---
-
-    function actualizarVisualPila() { // Renombrada
-        // 1. Limpiar la vista
-        pilaVisual.innerHTML = '';
-        mostrarMensaje('', ''); // Limpiar mensajes de error
-
-        // 2. Volver a dibujar la pila desde el arreglo
-        pila.forEach((valor, index) => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'item-pila';
-            itemDiv.innerText = valor;
-
-            // 3. Marcar el Tope (Cima)
-            if (index === pila.length - 1) {
-                itemDiv.classList.add('tope');
-                infoTope.innerText = `Tope: ${valor}`;
+        // --- Event Listeners para los botones ---
+        btnPush.addEventListener('click', () => {
+            const valor = inputValor.value;
+            if (valor) {
+                hacerPush(valor);
+                inputValor.value = ''; // Limpiar input
             }
-
-            pilaVisual.appendChild(itemDiv);
         });
 
-        // 4. Actualizar info del tope si está vacía
-        if (pila.length === 0) {
-            infoTope.innerText = 'Tope: (vacío)';
-        }
-    }
-
-    function mostrarMensaje(texto, clase) {
-        areaMensajes.innerText = texto;
-        areaMensajes.className = clase; // Asigna la clase de error (o ninguna)
-    }
-
-    // --- INICIO: LÓGICA DE COLAS (AÑADIDA) ---
-
-    // --- LÓGICA COLA SIMPLE ---
-    const MAX_COLA_SIMPLE = 5;
-    let colaSimple = []; // Arreglo dinámico para la cola simple
-
-    // DOM Refs Cola Simple
-    const btnEncolarSimple = document.getElementById('btn-encolar-simple');
-    const btnDesencolarSimple = document.getElementById('btn-desencolar-simple');
-    const inputSimple = document.getElementById('valor-cola-simple');
-    const visualSimple = document.getElementById('cola-simple-visual');
-    const msjSimple = document.getElementById('mensajes-cola-simple');
-    const infoSimple = document.getElementById('info-cola-simple');
-
-    // Eventos Cola Simple
-    btnEncolarSimple.addEventListener('click', () => {
-        const valor = inputSimple.value;
-        if (valor) {
-            encolarSimple(valor);
-            inputSimple.value = '';
-        }
-    });
-
-    btnDesencolarSimple.addEventListener('click', () => {
-        desencolarSimple();
-    });
-
-    function encolarSimple(valor) {
-        if (colaSimple.length >= MAX_COLA_SIMPLE) {
-            mostrarMensajeCola(msjSimple, '¡Desbordamiento! Cola simple llena.', 'error-overflow');
-            return;
-        }
-        colaSimple.push(valor); // Añade al final
-        actualizarVisualSimple();
-    }
-
-    function desencolarSimple() {
-        if (colaSimple.length === 0) {
-            mostrarMensajeCola(msjSimple, '¡Subdesbordamiento! Cola simple vacía.', 'error-underflow');
-            return;
-        }
-        colaSimple.shift(); // Saca del inicio
-        actualizarVisualSimple();
-    }
-
-    function actualizarVisualSimple() {
-        visualSimple.innerHTML = ''; // Limpiar
-        mostrarMensajeCola(msjSimple, '', ''); // Limpiar mensajes
-
-        colaSimple.forEach((valor, index) => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'item-cola';
-            itemDiv.innerText = valor;
-
-            // Añadir indicadores
-            if (index === 0) { // Frente
-                const frenteTag = document.createElement('span');
-                frenteTag.className = 'indicador-frente';
-                frenteTag.innerText = 'F';
-                itemDiv.appendChild(frenteTag);
-            }
-            if (index === colaSimple.length - 1) { // Final
-                const finalTag = document.createElement('span');
-                finalTag.className = 'indicador-final';
-                finalTag.innerText = 'R';
-                itemDiv.appendChild(finalTag);
-            }
-            visualSimple.appendChild(itemDiv);
+        btnPop.addEventListener('click', () => {
+            hacerPop();
         });
 
-        // Actualizar info
-        if (colaSimple.length === 0) {
-            infoSimple.innerText = 'Frente: - | Final: -';
-        } else {
-            infoSimple.innerText = `Frente: ${colaSimple[0]} | Final: ${colaSimple[colaSimple.length - 1]}`;
+        // --- Funciones de la Pila ---
+
+        function hacerPush(valor) {
+            if (pila.length >= MAX_CAPACIDAD) {
+                mostrarMensaje('¡Desbordamiento! La pila está llena.', 'error-overflow');
+                return;
+            }
+
+            pila.push(valor);
+            actualizarVisualPila();
         }
-    }
 
-    // --- LÓGICA COLA CIRCULAR ---
-    const MAX_COLA_CIRCULAR = 5;
-    let colaCircular = new Array(MAX_COLA_CIRCULAR).fill(null);
-    let frenteCircular = -1;
-    let finalCircular = -1;
-    let slotsCirculares = []; // Para guardar los divs de los slots
+        function hacerPop() {
+            if (pila.length === 0) {
+                mostrarMensaje('¡Subdesbordamiento! La pila está vacía.', 'error-underflow');
+                return;
+            }
 
-    // DOM Refs Cola Circular
-    const btnEncolarCircular = document.getElementById('btn-encolar-circular');
-    const btnDesencolarCircular = document.getElementById('btn-desencolar-circular');
-    const inputCircular = document.getElementById('valor-cola-circular');
-    const visualCircular = document.getElementById('cola-circular-visual');
-    const msjCircular = document.getElementById('mensajes-cola-circular');
-    const infoCircular = document.getElementById('info-cola-circular');
-
-    // Inicializar la vista de la cola circular
-    function inicializarColaCircular() {
-        visualCircular.innerHTML = '';
-        slotsCirculares = [];
-        for (let i = 0; i < MAX_COLA_CIRCULAR; i++) {
-            const slotDiv = document.createElement('div');
-            slotDiv.className = 'slot-cola-circular';
-            slotDiv.innerText = ''; // Vacío
-            visualCircular.appendChild(slotDiv);
-            slotsCirculares.push(slotDiv);
+            pila.pop();
+            actualizarVisualPila();
         }
-    }
-    inicializarColaCircular(); // Crear los slots al cargar
 
-    // Eventos Cola Circular
-    btnEncolarCircular.addEventListener('click', () => {
-        const valor = inputCircular.value;
-        if (valor) {
-            encolarCircular(valor);
-            inputCircular.value = '';
+        // --- Funciones Auxiliares Pila ---
+
+        function actualizarVisualPila() {
+            pilaVisual.innerHTML = '';
+            mostrarMensaje('', ''); // Limpiar mensajes de error
+
+            pila.forEach((valor, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item-pila';
+                itemDiv.innerText = valor;
+
+                if (index === pila.length - 1) {
+                    itemDiv.classList.add('tope');
+                    infoTope.innerText = `Tope: ${valor}`;
+                }
+
+                pilaVisual.appendChild(itemDiv);
+            });
+
+            if (pila.length === 0) {
+                infoTope.innerText = 'Tope: (vacío)';
+            }
         }
-    });
 
-    btnDesencolarCircular.addEventListener('click', () => {
-        desencolarCircular();
-    });
-
-    function encolarCircular(valor) {
-        // 1. Checar Overflow
-        if ((finalCircular + 1) % MAX_COLA_CIRCULAR === frenteCircular) {
-            mostrarMensajeCola(msjCircular, '¡Desbordamiento! Cola circular llena.', 'error-overflow');
-            return;
+        function mostrarMensaje(texto, clase) {
+            areaMensajes.innerText = texto;
+            areaMensajes.className = clase; // Asigna la clase de error (o ninguna)
         }
-        // 2. Checar si es el primer elemento
-        if (frenteCircular === -1) {
-            frenteCircular = 0;
+
+        // --- LÓGICA DE COLAS (Modificada) ---
+
+        // --- LÓGICA COLA SIMPLE ---
+        const MAX_COLA_SIMPLE = 5;
+        let colaSimple = [];
+        let encolarBloqueado = false; // Variable de estado de bloqueo
+
+        // DOM Refs Cola Simple
+        const btnEncolarSimple = document.getElementById('btn-encolar-simple');
+        const btnDesencolarSimple = document.getElementById('btn-desencolar-simple');
+        const inputSimple = document.getElementById('valor-cola-simple');
+        const visualSimple = document.getElementById('cola-simple-visual');
+        const msjSimple = document.getElementById('mensajes-cola-simple');
+        const infoSimple = document.getElementById('info-cola-simple');
+
+        // Eventos Cola Simple
+        btnEncolarSimple.addEventListener('click', () => {
+            const valor = inputSimple.value;
+            if (valor) {
+                encolarSimple(valor);
+                inputSimple.value = '';
+            }
+        });
+
+        btnDesencolarSimple.addEventListener('click', () => {
+            desencolarSimple();
+        });
+
+        function encolarSimple(valor) {
+            // 1. Verificar el BLOQUEO
+            if (encolarBloqueado) {
+                mostrarMensajeCola(msjSimple, '¡Bloqueo! No se puede encolar después de desencolar hasta que la cola esté vacía.', 'error-overflow');
+                return; 
+            }
+
+            if (colaSimple.length >= MAX_COLA_SIMPLE) {
+                mostrarMensajeCola(msjSimple, '¡Desbordamiento! Cola simple llena.', 'error-overflow');
+                return;
+            }
+            colaSimple.push(valor); // Añade al final
+            actualizarVisualSimple();
         }
-        // 3. Mover 'final' y encolar
-        finalCircular = (finalCircular + 1) % MAX_COLA_CIRCULAR;
-        colaCircular[finalCircular] = valor;
-        actualizarVisualCircular();
-    }
 
-    function desencolarCircular() {
-        // 1. Checar Underflow
-        if (frenteCircular === -1) {
-            mostrarMensajeCola(msjCircular, '¡Subdesbordamiento! Cola circular vacía.', 'error-underflow');
-            return;
+        function desencolarSimple() {
+            if (colaSimple.length === 0) {
+                mostrarMensajeCola(msjSimple, '¡Subdesbordamiento! Cola simple vacía.', 'error-underflow');
+                encolarBloqueado = false; 
+                actualizarVisualSimple();
+                return;
+            }
+            
+            const valorDesencolado = colaSimple.shift(); // Saca del inicio
+            
+            // *** APLICAR BLOQUEO DESPUÉS DE LA OPERACIÓN ***
+            encolarBloqueado = true;
+            
+            mostrarMensajeCola(msjSimple, `Desencolado: ${valorDesencolado}. ENCOLAR BLOQUEADO.`, 'error-underflow');
+            
+            actualizarVisualSimple();
         }
-        // 2. Sacar el valor (y marcar como null)
-        colaCircular[frenteCircular] = null;
-        // 3. Checar si era el último elemento
-        if (frenteCircular === finalCircular) {
-            frenteCircular = -1;
-            finalCircular = -1;
-        } else {
-            // 4. Mover 'frente'
-            frenteCircular = (frenteCircular + 1) % MAX_COLA_CIRCULAR;
-        }
-        actualizarVisualCircular();
-    }
 
-    function actualizarVisualCircular() {
-        mostrarMensajeCola(msjCircular, '', ''); // Limpiar mensajes
+        function actualizarVisualSimple() {
+            visualSimple.innerHTML = ''; // Limpiar
+            
+            // Limpiar mensajes, pero solo si no hay un mensaje de bloqueo activo
+            if (!encolarBloqueado && colaSimple.length !== 0) {
+                mostrarMensajeCola(msjSimple, '', ''); 
+            }
 
-        for (let i = 0; i < MAX_COLA_CIRCULAR; i++) {
-            const slot = slotsCirculares[i];
-            const valor = colaCircular[i];
-            slot.innerHTML = ''; // Limpiar indicadores y texto
-            slot.innerText = valor || '';
+            colaSimple.forEach((valor, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item-cola';
+                itemDiv.innerText = valor;
 
-            // Añadir/Quitar clase 'filled'
-            if (valor !== null) {
-                slot.classList.add('filled');
+                // Añadir indicadores
+                if (index === 0) { // Frente
+                    const frenteTag = document.createElement('span');
+                    frenteTag.className = 'indicador-frente';
+                    frenteTag.innerText = 'F';
+                    itemDiv.appendChild(frenteTag);
+                }
+                if (index === colaSimple.length - 1) { // Final
+                    const finalTag = document.createElement('span');
+                    finalTag.className = 'indicador-final';
+                    finalTag.innerText = 'R';
+                    itemDiv.appendChild(finalTag);
+                }
+                visualSimple.appendChild(itemDiv);
+            });
+
+            // Actualizar info
+            if (colaSimple.length === 0) {
+                infoSimple.innerText = 'Frente: - | Final: -';
+                // *** LIBERAR BLOQUEO SI LA COLA ESTÁ VACÍA ***
+                if (encolarBloqueado) {
+                     encolarBloqueado = false;
+                     mostrarMensajeCola(msjSimple, 'Cola vacía. El encolado ha sido RESTABLECIDO.', 'error-underflow');
+                }
             } else {
-                slot.classList.remove('filled');
-            }
-
-            // Añadir indicadores
-            if (i === frenteCircular) {
-                const frenteTag = document.createElement('span');
-                frenteTag.className = 'indicador-frente';
-                frenteTag.innerText = 'F';
-                slot.appendChild(frenteTag);
-            }
-            if (i === finalCircular) {
-                const finalTag = document.createElement('span');
-                finalTag.className = 'indicador-final';
-                finalTag.innerText = 'R';
-                slot.appendChild(finalTag);
+                infoSimple.innerText = `Frente: ${colaSimple[0]} | Final: ${colaSimple[colaSimple.length - 1]}`;
             }
         }
 
-        // Actualizar info
-        infoCircular.innerText = `Frente: ${frenteCircular} | Final: ${finalCircular}`;
-    }
+        // --- LÓGICA COLA CIRCULAR ---
+        const MAX_COLA_CIRCULAR = 5;
+        let colaCircular = new Array(MAX_COLA_CIRCULAR).fill(null);
+        let frenteCircular = -1;
+        let finalCircular = -1;
+        let slotsCirculares = []; // Para guardar los divs de los slots
 
-    // Función auxiliar para mensajes de colas (evita conflicto con la de pila)
-    function mostrarMensajeCola(elemento, texto, clase) {
-        elemento.innerText = texto;
-        elemento.className = 'cola-mensajes ' + clase; // Asigna la clase de error
-    }
+        // DOM Refs Cola Circular
+        const btnEncolarCircular = document.getElementById('btn-encolar-circular');
+        const btnDesencolarCircular = document.getElementById('btn-desencolar-circular');
+        const inputCircular = document.getElementById('valor-cola-circular');
+        const visualCircular = document.getElementById('cola-circular-visual');
+        const msjCircular = document.getElementById('mensajes-cola-circular');
+        const infoCircular = document.getElementById('info-cola-circular');
 
-    // --- FIN: LÓGICA DE COLAS (AÑADIDA) ---
+        // Inicializar la vista de la cola circular
+        function inicializarColaCircular() {
+            visualCircular.innerHTML = '';
+            slotsCirculares = [];
+            for (let i = 0; i < MAX_COLA_CIRCULAR; i++) {
+                const slotDiv = document.createElement('div');
+                slotDiv.className = 'slot-cola-circular';
+                slotDiv.innerText = ''; // Vacío
+                visualCircular.appendChild(slotDiv);
+                slotsCirculares.push(slotDiv);
+            }
+        }
+        inicializarColaCircular(); // Crear los slots al cargar
 
-  </script>
+        // Eventos Cola Circular
+        btnEncolarCircular.addEventListener('click', () => {
+            const valor = inputCircular.value;
+            if (valor) {
+                encolarCircular(valor);
+                inputCircular.value = '';
+            }
+        });
+
+        btnDesencolarCircular.addEventListener('click', () => {
+            desencolarCircular();
+        });
+
+        function encolarCircular(valor) {
+            // 1. Checar Overflow
+            if ((finalCircular + 1) % MAX_COLA_CIRCULAR === frenteCircular) {
+                mostrarMensajeCola(msjCircular, '¡Desbordamiento! Cola circular llena.', 'error-overflow');
+                return;
+            }
+            // 2. Checar si es el primer elemento
+            if (frenteCircular === -1) {
+                frenteCircular = 0;
+            }
+            // 3. Mover 'final' y encolar
+            finalCircular = (finalCircular + 1) % MAX_COLA_CIRCULAR;
+            colaCircular[finalCircular] = valor;
+            actualizarVisualCircular();
+        }
+
+        function desencolarCircular() {
+            // 1. Checar Underflow
+            if (frenteCircular === -1) {
+                mostrarMensajeCola(msjCircular, '¡Subdesbordamiento! Cola circular vacía.', 'error-underflow');
+                return;
+            }
+            // 2. Sacar el valor (y marcar como null)
+            colaCircular[frenteCircular] = null;
+            // 3. Checar si era el último elemento
+            if (frenteCircular === finalCircular) {
+                frenteCircular = -1;
+                finalCircular = -1;
+            } else {
+                // 4. Mover 'frente'
+                frenteCircular = (frenteCircular + 1) % MAX_COLA_CIRCULAR;
+            }
+            actualizarVisualCircular();
+        }
+
+        function actualizarVisualCircular() {
+            mostrarMensajeCola(msjCircular, '', ''); // Limpiar mensajes
+
+            for (let i = 0; i < MAX_COLA_CIRCULAR; i++) {
+                const slot = slotsCirculares[i];
+                const valor = colaCircular[i];
+                slot.innerHTML = ''; // Limpiar indicadores y texto
+                slot.innerText = valor || '';
+
+                // Añadir/Quitar clase 'filled'
+                if (valor !== null) {
+                    slot.classList.add('filled');
+                } else {
+                    slot.classList.remove('filled');
+                }
+
+                // Añadir indicadores
+                if (i === frenteCircular) {
+                    const frenteTag = document.createElement('span');
+                    frenteTag.className = 'indicador-frente';
+                    frenteTag.innerText = 'F';
+                    slot.appendChild(frenteTag);
+                }
+                if (i === finalCircular) {
+                    const finalTag = document.createElement('span');
+                    finalTag.className = 'indicador-final';
+                    finalTag.innerText = 'R';
+                    slot.appendChild(finalTag);
+                }
+            }
+
+            // Actualizar info
+            infoCircular.innerText = `Frente: ${frenteCircular} | Final: ${finalCircular}`;
+        }
+
+        // Función auxiliar para mensajes de colas (evita conflicto con la de pila)
+        function mostrarMensajeCola(elemento, texto, clase) {
+            elemento.innerText = texto;
+            elemento.className = 'cola-mensajes ' + clase; // Asigna la clase de error
+        }
+
+        // --- LÓGICA DEL ÁRBOL BINARIO DE BÚSQUEDA (ABB) ---
+
+        // 1. CLASES DE LA ESTRUCTURA DE DATOS
+        class Node {
+            constructor(value) {
+                this.value = value;
+                this.left = null;
+                this.right = null;
+                this.parent = null; // Para calcular información de estructura
+                this.level = 0;
+            }
+        }
+
+        class BinarySearchTree {
+            constructor() {
+                this.root = null;
+                this.nodeCount = 0;
+            }
+
+            // Método para insertar un nodo
+            insert(value) {
+                const newNode = new Node(value);
+                if (this.root === null) {
+                    this.root = newNode;
+                    this.nodeCount++;
+                    return;
+                }
+                
+                let current = this.root;
+                let parent = null;
+                let level = 0;
+                while(true) {
+                    parent = current;
+                    level++;
+                    if (value < current.value) {
+                        current = current.left;
+                        if (current === null) {
+                            parent.left = newNode;
+                            newNode.parent = parent;
+                            newNode.level = level;
+                            this.nodeCount++;
+                            return;
+                        }
+                    } else if (value > current.value) {
+                        current = current.right;
+                        if (current === null) {
+                            parent.right = newNode;
+                            newNode.parent = parent;
+                            newNode.level = level;
+                            this.nodeCount++;
+                            return;
+                        }
+                    } else {
+                        // Valor duplicado (no se inserta)
+                        return;
+                    }
+                }
+            }
+
+            // --- RECORRIDOS ---
+
+            // In-orden (Izquierda, Raíz, Derecha) -> Ordenado
+            inOrder(node, result = []) {
+                if (node) {
+                    this.inOrder(node.left, result);
+                    result.push(node.value);
+                    this.inOrder(node.right, result);
+                }
+                return result;
+            }
+
+            // Pre-orden (Raíz, Izquierda, Derecha)
+            preOrder(node, result = []) {
+                if (node) {
+                    result.push(node.value);
+                    this.preOrder(node.left, result);
+                    this.preOrder(node.right, result);
+                }
+                return result;
+            }
+
+            // Post-orden (Izquierda, Derecha, Raíz)
+            postOrder(node, result = []) {
+                if (node) {
+                    this.postOrder(node.left, result);
+                    this.postOrder(node.right, result);
+                    result.push(node.value);
+                }
+                return result;
+            }
+
+            // --- INFORMACIÓN DE ESTRUCTURA ---
+            
+            // Altura (máxima profundidad)
+            getHeight(node = this.root) {
+                if (node === null) {
+                    return -1;
+                }
+                const leftHeight = this.getHeight(node.left);
+                const rightHeight = this.getHeight(node.right);
+                return Math.max(leftHeight, rightHeight) + 1;
+            }
+
+            // Contar Hojas
+            countLeaves(node = this.root) {
+                if (node === null) return 0;
+                if (node.left === null && node.right === null) return 1;
+                return this.countLeaves(node.left) + this.countLeaves(node.right);
+            }
+            
+            // Grado Máximo (2 para ABB)
+            getMaxDegree() {
+                return 2;
+            }
+        }
+
+        const abb = new BinarySearchTree();
+
+        // 2. LÓGICA DE VISUALIZACIÓN
+        const treeVisualizationContainer = document.getElementById('tree-visualization-container');
+        const infoRecorridos = document.getElementById('info-recorridos');
+        const infoEstructura = document.getElementById('info-estructura');
+        const infoEstructuraDetalle = document.getElementById('info-estructura-detalle');
+
+        // Función Recursiva para dibujar el árbol
+        function drawTree(node, isRoot = true) {
+            if (node === null) return null;
+
+            const container = document.createElement('div');
+            container.className = 'node-container';
+
+            const nodeDiv = document.createElement('div');
+            nodeDiv.className = 'node-value';
+            nodeDiv.innerText = node.value;
+            nodeDiv.id = `node-${node.value}`;
+
+            // Si no es la raíz, añadir línea del padre
+            if (!isRoot) {
+                const parentLine = document.createElement('div');
+                parentLine.className = 'line-parent';
+                container.appendChild(parentLine);
+            }
+
+            container.appendChild(nodeDiv);
+
+            const childrenContainer = document.createElement('div');
+            childrenContainer.className = 'node-children';
+
+            // Dibujar hijos
+            const leftChild = drawTree(node.left, false);
+            const rightChild = drawTree(node.right, false);
+
+            if (leftChild || rightChild) {
+                // Añadir líneas de conexión horizontales si hay al menos un hijo
+                const lineHorizontal = document.createElement('div');
+                lineHorizontal.className = 'line-horizontal';
+
+                // Calcular el ancho de la línea (aproximación basada en margen)
+                const margin = 20; // Espacio entre hijos + padding
+                const width = (leftChild ? leftChild.offsetWidth : 0) + (rightChild ? rightChild.offsetWidth : 0) + (leftChild && rightChild ? margin * 2 : margin) + 10;
+                
+                lineHorizontal.style.width = `${width}px`;
+                lineHorizontal.style.left = `calc(50% - ${width / 2}px)`;
+
+                container.appendChild(lineHorizontal);
+
+                // Envoltura para el hijo izquierdo
+                const leftWrapper = document.createElement('div');
+                leftWrapper.className = 'node-child-wrapper';
+                if (leftChild) {
+                    leftWrapper.appendChild(leftChild);
+                    // Línea vertical para hijo izquierdo
+                    const lineVerticalLeft = document.createElement('div');
+                    lineVerticalLeft.className = 'line-vertical-left';
+                    leftWrapper.appendChild(lineVerticalLeft);
+                } else {
+                    // Mantener el espaciado si no hay hijo izquierdo
+                    leftWrapper.style.minWidth = '40px'; 
+                }
+                childrenContainer.appendChild(leftWrapper);
+
+                // Envoltura para el hijo derecho
+                const rightWrapper = document.createElement('div');
+                rightWrapper.className = 'node-child-wrapper';
+                if (rightChild) {
+                    rightWrapper.appendChild(rightChild);
+                    // Línea vertical para hijo derecho
+                    const lineVerticalRight = document.createElement('div');
+                    lineVerticalRight.className = 'line-vertical-right';
+                    rightWrapper.appendChild(lineVerticalRight);
+                } else {
+                    // Mantener el espaciado si no hay hijo derecho
+                    rightWrapper.style.minWidth = '40px'; 
+                }
+                childrenContainer.appendChild(rightWrapper);
+                
+                container.appendChild(childrenContainer);
+            }
+            return container;
+        }
+
+        // Función principal para actualizar la visualización y la información
+        function updateTreeVisualization() {
+            // 1. Dibujar el árbol
+            treeVisualizationContainer.innerHTML = '';
+            if (abb.root) {
+                const visual = drawTree(abb.root);
+                treeVisualizationContainer.appendChild(visual);
+            }
+
+            // 2. Actualizar la información
+            const inOrder = abb.inOrder(abb.root).join(', ');
+            const preOrder = abb.preOrder(abb.root).join(', ');
+            const postOrder = abb.postOrder(abb.root).join(', ');
+            const height = abb.getHeight();
+            const leaves = abb.countLeaves();
+            const maxDepth = height > 0 ? height : 0; // Profundidad máxima es igual a la altura
+
+            infoRecorridos.innerHTML = `Recorridos: <strong>In-orden:</strong> [${inOrder}] | <strong>Pre-orden:</strong> [${preOrder}] | <strong>Post-orden:</strong> [${postOrder}]`;
+            infoEstructura.innerHTML = `<strong>Raíz:</strong> ${abb.root ? abb.root.value : '-'} | <strong>Altura:</strong> ${height} | <strong>Hojas:</strong> ${leaves}`;
+            infoEstructuraDetalle.innerHTML = `<strong>Grado Máximo:</strong> ${abb.getMaxDegree()} | <strong>Profundidad Máxima:</strong> ${maxDepth}`;
+        }
+        
+        // Función de animación del recorrido (Pre-orden por defecto)
+        async function animateTraversal(traversalOrder) {
+            const nodes = document.querySelectorAll('.node-value');
+            nodes.forEach(n => n.classList.remove('visited'));
+
+            const delay = 300; // Milisegundos entre visitas
+
+            for (const value of traversalOrder) {
+                const nodeId = `node-${value}`;
+                const nodeElement = document.getElementById(nodeId);
+
+                // 1. Resaltar como "visitando"
+                nodeElement.classList.add('highlight');
+                await new Promise(resolve => setTimeout(resolve, delay));
+                
+                // 2. Marcar como "visitado"
+                nodeElement.classList.remove('highlight');
+                nodeElement.classList.add('visited');
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+        }
+
+
+        // 3. EVENT LISTENERS DEL ÁRBOL
+        document.getElementById('btn-insertar-arbol').addEventListener('click', () => {
+            const value = parseInt(document.getElementById('valor-arbol').value);
+            if (!isNaN(value) && value >= 1 && value <= 100) {
+                abb.insert(value);
+                updateTreeVisualization();
+                document.getElementById('valor-arbol').value = '';
+            } else {
+                alert('Por favor, introduce un número válido entre 1 y 100.');
+            }
+        });
+
+        document.getElementById('btn-recorrer-arbol').addEventListener('click', () => {
+            if (abb.root) {
+                const preOrderTraversal = abb.preOrder(abb.root);
+                animateTraversal(preOrderTraversal);
+            } else {
+                alert('El árbol está vacío. Inserta nodos primero.');
+            }
+        });
+        
+        // Inicialización
+        updateTreeVisualization(); 
+
+    </script>
 </body>
 </html>
+
