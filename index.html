@@ -525,6 +525,12 @@
             background: linear-gradient(90deg, var(--morado), var(--rosa));
         }
 
+        #tree-container-wrapper {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
         #tree-visualization-container {
             min-height: 300px;
             border: 2px dashed var(--verde);
@@ -536,6 +542,22 @@
             overflow: auto;
             position: relative;
             background-color: #fcfcfc;
+            flex-grow: 1; /* Permite que ocupe el espacio principal */
+        }
+
+        #node-detail-panel {
+            width: 250px;
+            min-height: 300px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: opacity 0.3s;
+        }
+        #node-detail-panel h4 {
+            margin-top: 0;
+            color: var(--morado);
         }
 
         .node-container {
@@ -560,7 +582,12 @@
             position: relative;
             z-index: 2;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            cursor: default;
+            cursor: pointer; /* Lo hacemos clickeable */
+        }
+        .node-value.active-node {
+             background-color: #f39c12; /* Naranja para el nodo seleccionado */
+             border-color: #e67e22;
+             transform: scale(1.05);
         }
         .node-value.highlight {
             background-color: #e74c3c;
@@ -580,49 +607,29 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Controla el espaciado horizontal de los hijos */
-            margin: 0 20px;
+            /* AUMENTO DEL ESPACIADO HORIZONTAL para mejor visualización */
+            margin: 0 50px;
             position: relative;
         }
 
-        .line {
+        /* --- Estilos de Líneas de Conexión --- */
+
+        .line-vertical-left, .line-vertical-right {
             position: absolute;
-            background-color: #7f8c8d;
-            z-index: 1;
-        }
-        .line-parent {
-            position: absolute;
-            height: 20px;
             width: 2px;
+            height: 30px; /* Longitud de las líneas inclinadas */
             background-color: #7f8c8d;
-            top: 42px; /* Debajo del nodo */
-            z-index: 1;
-        }
-        .line-horizontal {
-            position: absolute;
-            height: 2px;
-            top: 62px; /* Línea de conexión horizontal */
+            top: 40px; /* Inicia desde el borde inferior del nodo */
+            transform-origin: top;
             z-index: 1;
         }
         .line-vertical-left {
-            position: absolute;
-            width: 2px;
-            height: 20px;
-            background-color: #7f8c8d;
-            top: 62px;
-            left: 0;
-            transform: translateX(-50%);
-            z-index: 1;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
         }
         .line-vertical-right {
-            position: absolute;
-            width: 2px;
-            height: 20px;
-            background-color: #7f8c8d;
-            top: 62px;
-            right: 0;
-            transform: translateX(50%);
-            z-index: 1;
+            left: 50%;
+            transform: translateX(-50%) rotate(-45deg);
         }
 
         .tree-info {
@@ -667,7 +674,7 @@
             <p>    Las estructuras de datos son formas organizadas de almacenar y gestionar información para usarla
                 de manera eficiente. En la programación orientada a objetos, permiten representar datos mediante
                 clases y objetos, facilitando el acceso, la modificación y el manejo lógico de la información. </p>
-            <img src="conceptobasico.png" alt="Ejemplo concepto" class="imagen-ejemplo">
+            <img src="Imagenes/conceptobasico.png" alt="Ejemplo concepto" class="imagen-ejemplo">
         </div>
 
         <div class="slide">
@@ -676,7 +683,7 @@
                 <li><strong>Lineales:</strong> Arreglos, Listas, Pilas, Colas.</li>
                 <li><strong>No lineales:</strong> Árboles, Grafos.</li>
             </ul>
-            <img src="clasificacion.png" alt="Ejemplo clasificación" class="imagen-ejemplo">
+            <img src="Imagenes/clasificacion.png" alt="Ejemplo clasificación" class="imagen-ejemplo">
         </div>
 
         <div class="slide">
@@ -686,7 +693,7 @@
                 <li><strong>Colas:</strong> FIFO (Primero en entrar, primero en salir).</li>
                 <li><strong>Árboles:</strong> Relación jerárquica entre nodos.</li>
             </ul>
-            <img src="indetificacion.avif" alt="Ejemplo identificación" class="imagen-ejemplo">
+            <img src="imagenes/indetificacion.avif" alt="Ejemplo identificación" class="imagen-ejemplo">
         </div>
 
         <div class="slide">
@@ -698,7 +705,7 @@ function factorial(n) {
     return n * factorial(n - 1);
 }
             </code>
-            <img src="recursividad.svg" alt="Ejemplo recursividad" class="imagen-ejemplo">
+            <img src="Imagenes/recursividad.svg" alt="Ejemplo recursividad" class="imagen-ejemplo">
         </div>
 
         <button class="boton" id="next">&#10095;</button>
@@ -710,37 +717,37 @@ function factorial(n) {
             <div class="tipo-card">
                 <h3>Arreglos</h3>
                 <p>Conjunto de elementos del mismo tipo almacenados en posiciones contiguas de memoria.</p>
-                <div class="mini-img"><img src="arreglos.png"></div>
+                <div class="mini-img"><img src="Imagenes/arreglos.png"></div>
             </div>
 
             <div class="tipo-card">
                 <h3>Pilas</h3>
                 <p>Estructura LIFO donde el último elemento en entrar es el primero en salir.</p>
-                <div class="mini-img"><img src="pilas.png"></div>
+                <div class="mini-img"><img src="Imagenes/pilas.png"></div>
             </div>
 
             <div class="tipo-card">
                 <h3>Colas</h3>
                 <p>Estructura FIFO donde el primer elemento en entrar es el primero en salir.</p>
-                <div class="mini-img"><img src="Colas.png"></div>
+                <div class="mini-img"><img src="Imagenes/Colas.png"></div>
             </div>
 
             <div class="tipo-card">
                 <h3>Listas Enlazadas</h3>
                 <p>Conjunto de nodos que contienen datos y una referencia al siguiente nodo.</p>
-                <div class="mini-img"><img src="tiposdelistas.png"></div>
+                <div class="mini-img"><img src="Imagenes/tiposdelistas.png"></div>
             </div>
 
             <div class="tipo-card">
                 <h3>Árboles</h3>
                 <p>Estructura jerárquica donde cada nodo puede tener hijos, formando ramas.</p>
-                <div class="mini-img"><img src="arbolEjemplo.png"></div>
+                <div class="mini-img"><img src="Imagenes/arbolEjemplo.png"></div>
             </div>
 
             <div class="tipo-card">
                 <h3>Recursividad</h3>
                 <p>Técnica donde una función se llama a sí misma para resolver subproblemas.</p>
-                <div class="mini-img"><img src="recursividad.svg"></div>
+                <div class="mini-img"><img src="Imagenes/recursividad.svg"></div>
             </div>
         </div>
     </section>
@@ -763,21 +770,21 @@ function factorial(n) {
             <div class="card">
                 <h3>Unidimensional</h3>
                 <p>Es una lista lineal de elementos del mismo tipo. Se usa para almacenar datos simples, como notas o edades.</p>
-                <div class="espacio3d"><a href="https://mywebar.com/p/Project_2_mc2e2rnjmk"><img src="unidimensional.png" ></a></div>
+                <div class="espacio3d"><a href="https://mywebar.com/p/Project_2_mc2e2rnjmk"><img src="Imagenes/unidimensional.png" ></a></div>
                 <a href="https://sketchfab.com/models/0da5c2d893f449acbf2fb7ea835da51e/embed?autostart=1&cardboard=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0" class="btn-ar">Ver en Realidad Aumentada</a>
             </div>
 
             <div class="card">
                 <h3>Bidimensional</h3>
                 <p>Representa una tabla o matriz. Se usa en cálculos matemáticos, gráficos o estructuras tabulares.</p>
-                <div class="espacio3d"><a  href="https://mywebar.com/p/Project_1_geax7r8erl"><img src="Bidimensional.png"></a></div>
+                <div class="espacio3d"><a  href="https://mywebar.com/p/Project_1_geax7r8erl"><img src="Imagenes/Bidimensional.png"></a></div>
                 <a href="https://sketchfab.com/models/c23783f7057a488ca104632c73ebbfe2/embed?autostart=1&cardboard=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0" class="btn-ar">Ver en Realidad Aumentada</a>
             </div>
 
             <div class="card">
                 <h3>Tridimensional</h3>
                 <p>Extiende el concepto de matriz a tres dimensiones. Ideal para representar espacios, coordenadas o cubos de datos.</p>
-                <div class="espacio3d"><a href="https://mywebar.com/p/Project_0_to0dyqz2gl"><img src="Tridimensional.png"></a></div>
+                <div class="espacio3d"><a href="https://mywebar.com/p/Project_0_to0dyqz2gl"><img src="Imagenes/Tridimensional.png"></a></div>
                 <a href="https://sketchfab.com/models/12129ce7a5d7429291714ae06150b42c/embed?autostart=1&cardboard=1&internal=1&tracking=0&ui_ar=0&ui_infos=0&ui_snapshots=1&ui_stop=0&ui_theatre=1&ui_watermark=0" class="btn-ar">Ver en Realidad Aumentada</a>
             </div>
         </div>
@@ -844,12 +851,27 @@ function factorial(n) {
             <button id="btn-insertar-arbol">Insertar Nodo</button>
             <button id="btn-recorrer-arbol">Recorrer (Pre-orden)</button>
         </div>
+        
+        <p style="text-align: center; font-style: italic;">Haz clic en un nodo para ver su información detallada (Padre, Nivel, etc.).</p>
 
-        <div id="tree-visualization-container">
+        <div id="tree-container-wrapper">
+            <div id="tree-visualization-container">
+                </div>
+            
+            <div id="node-detail-panel" style="opacity: 0;">
+                <h4>Detalle del Nodo Seleccionado</h4>
+                <p id="detail-valor">Valor: -</p>
+                <p id="detail-padre">Padre: -</p>
+                <p id="detail-nivel">Nivel/Profundidad: -</p>
+                <p id="detail-orden">Orden/Grado: 2 / -</p>
+                <hr>
+                <p id="detail-subarbol-izq">Subárbol Izquierdo: -</p>
+                <p id="detail-subarbol-der">Subárbol Derecho: -</p>
             </div>
+        </div>
 
         <div class="tree-info">
-            <h4>Información del Árbol</h4>
+            <h4>Información Global del Árbol</h4>
             <p id="info-recorridos">Recorridos: In-orden: - | Pre-orden: - | Post-orden: -</p>
             <p id="info-estructura">Raíz: - | Altura: - | Hojas: -</p>
             <p id="info-estructura-detalle">Grado Máximo: - | Profundidad Máxima: -</p>
@@ -883,6 +905,7 @@ function factorial(n) {
             </ul>
         </div>
     </section>
+    
     <footer>Daniel Francisco Valdovinos Castro DSM-41</footer>
 
     <script>
@@ -1205,7 +1228,7 @@ function factorial(n) {
                 this.value = value;
                 this.left = null;
                 this.right = null;
-                this.parent = null; // Para calcular información de estructura
+                this.parent = null; 
                 this.level = 0;
             }
         }
@@ -1216,7 +1239,6 @@ function factorial(n) {
                 this.nodeCount = 0;
             }
 
-            // Método para insertar un nodo
             insert(value) {
                 const newNode = new Node(value);
                 if (this.root === null) {
@@ -1250,15 +1272,41 @@ function factorial(n) {
                             return;
                         }
                     } else {
-                        // Valor duplicado (no se inserta)
-                        return;
+                        return; // Valor duplicado
                     }
                 }
             }
+            
+            // --- Búsqueda del nodo (Necesario para detalles) ---
+            findNode(value) {
+                let current = this.root;
+                while (current) {
+                    if (value === current.value) return current;
+                    if (value < current.value) {
+                        current = current.left;
+                    } else {
+                        current = current.right;
+                    }
+                }
+                return null;
+            }
+            
+            // --- RECORRIDOS (Para subárboles) ---
+            getTraversalString(node, type) {
+                let result = [];
+                const traversal = (n) => {
+                    if (n) {
+                        if (type === 'pre') result.push(n.value);
+                        traversal(n.left);
+                        if (type === 'in') result.push(n.value);
+                        traversal(n.right);
+                        if (type === 'post') result.push(n.value);
+                    }
+                };
+                traversal(node);
+                return `[${result.join(', ')}]`;
+            }
 
-            // --- RECORRIDOS ---
-
-            // In-orden (Izquierda, Raíz, Derecha) -> Ordenado
             inOrder(node, result = []) {
                 if (node) {
                     this.inOrder(node.left, result);
@@ -1268,7 +1316,6 @@ function factorial(n) {
                 return result;
             }
 
-            // Pre-orden (Raíz, Izquierda, Derecha)
             preOrder(node, result = []) {
                 if (node) {
                     result.push(node.value);
@@ -1278,7 +1325,6 @@ function factorial(n) {
                 return result;
             }
 
-            // Post-orden (Izquierda, Derecha, Raíz)
             postOrder(node, result = []) {
                 if (node) {
                     this.postOrder(node.left, result);
@@ -1289,8 +1335,6 @@ function factorial(n) {
             }
 
             // --- INFORMACIÓN DE ESTRUCTURA ---
-            
-            // Altura (máxima profundidad)
             getHeight(node = this.root) {
                 if (node === null) {
                     return -1;
@@ -1300,30 +1344,76 @@ function factorial(n) {
                 return Math.max(leftHeight, rightHeight) + 1;
             }
 
-            // Contar Hojas
             countLeaves(node = this.root) {
                 if (node === null) return 0;
                 if (node.left === null && node.right === null) return 1;
                 return this.countLeaves(node.left) + this.countLeaves(node.right);
             }
             
-            // Grado Máximo (2 para ABB)
             getMaxDegree() {
                 return 2;
             }
         }
 
         const abb = new BinarySearchTree();
+        let activeNodeElement = null; // Para rastrear el nodo seleccionado
 
         // 2. LÓGICA DE VISUALIZACIÓN
         const treeVisualizationContainer = document.getElementById('tree-visualization-container');
+        const nodeDetailPanel = document.getElementById('node-detail-panel');
+        
+        // DOM para detalles del nodo
+        const detailValor = document.getElementById('detail-valor');
+        const detailPadre = document.getElementById('detail-padre');
+        const detailNivel = document.getElementById('detail-nivel');
+        const detailOrden = document.getElementById('detail-orden');
+        const detailSubarbolIzq = document.getElementById('detail-subarbol-izq');
+        const detailSubarbolDer = document.getElementById('detail-subarbol-der');
+        
+        // DOM para información global
         const infoRecorridos = document.getElementById('info-recorridos');
         const infoEstructura = document.getElementById('info-estructura');
         const infoEstructuraDetalle = document.getElementById('info-estructura-detalle');
 
-        // Función Recursiva para dibujar el árbol
-        function drawTree(node, isRoot = true) {
-            if (node === null) return null;
+        // *** NUEVA FUNCIÓN: Muestra la información detallada del nodo ***
+        function displayNodeInfo(node) {
+            // Quitar clase activa del nodo anterior
+            if (activeNodeElement) {
+                activeNodeElement.classList.remove('active-node');
+            }
+            
+            // Marcar el nuevo nodo como activo
+            activeNodeElement = document.getElementById(`node-${node.value}`);
+            if (activeNodeElement) {
+                activeNodeElement.classList.add('active-node');
+            }
+            
+            // Calcular Grado (Hijos directos)
+            let grado = 0;
+            if (node.left) grado++;
+            if (node.right) grado++;
+
+            // Llenar el panel de detalles
+            nodeDetailPanel.style.opacity = '1';
+            detailValor.innerHTML = `Valor: <strong>${node.value}</strong>`;
+            detailPadre.innerHTML = `Padre: <strong>${node.parent ? node.parent.value : '(Raíz)'}</strong>`;
+            detailNivel.innerHTML = `Nivel/Profundidad: <strong>${node.level}</strong>`;
+            detailOrden.innerHTML = `Orden/Grado: <strong>2 / ${grado}</strong>`;
+            
+            // Mostrar subárboles (usando pre-orden para representación)
+            detailSubarbolIzq.innerHTML = `Subárbol Izquierdo: <strong>${node.left ? abb.getTraversalString(node.left, 'pre') : '(vacío)'}</strong>`;
+            detailSubarbolDer.innerHTML = `Subárbol Derecho: <strong>${node.right ? abb.getTraversalString(node.right, 'pre') : '(vacío)'}</strong>`;
+        }
+
+
+        // Función Recursiva para dibujar el árbol (CORREGIDA la lógica de líneas)
+        function drawTree(node) {
+            if (node === null) {
+                const emptyWrapper = document.createElement('div');
+                emptyWrapper.className = 'node-child-wrapper';
+                emptyWrapper.style.minWidth = '40px'; // Mantiene espaciado para hijos inexistentes
+                return emptyWrapper; 
+            }
 
             const container = document.createElement('div');
             container.className = 'node-container';
@@ -1332,71 +1422,45 @@ function factorial(n) {
             nodeDiv.className = 'node-value';
             nodeDiv.innerText = node.value;
             nodeDiv.id = `node-${node.value}`;
-
-            // Si no es la raíz, añadir línea del padre
-            if (!isRoot) {
-                const parentLine = document.createElement('div');
-                parentLine.className = 'line-parent';
-                container.appendChild(parentLine);
-            }
+            
+            // Asignar evento de clic para ver detalles
+            nodeDiv.addEventListener('click', () => displayNodeInfo(node));
 
             container.appendChild(nodeDiv);
 
             const childrenContainer = document.createElement('div');
             childrenContainer.className = 'node-children';
 
-            // Dibujar hijos
-            const leftChild = drawTree(node.left, false);
-            const rightChild = drawTree(node.right, false);
+            // Dibujar hijos recursivamente
+            const leftChild = drawTree(node.left);
+            const rightChild = drawTree(node.right);
 
-            if (leftChild || rightChild) {
-                // Añadir líneas de conexión horizontales si hay al menos un hijo
-                const lineHorizontal = document.createElement('div');
-                lineHorizontal.className = 'line-horizontal';
+            const hasLeft = node.left !== null;
+            const hasRight = node.right !== null;
 
-                // Calcular el ancho de la línea (aproximación basada en margen)
-                const margin = 20; // Espacio entre hijos + padding
-                const width = (leftChild ? leftChild.offsetWidth : 0) + (rightChild ? rightChild.offsetWidth : 0) + (leftChild && rightChild ? margin * 2 : margin) + 10;
+            if (hasLeft || hasRight) {
+                // Líneas de conexión inclinadas (Van dentro del nodo-value)
+                if (hasLeft) {
+                    const lineLeft = document.createElement('div');
+                    lineLeft.className = 'line-vertical-left';
+                    nodeDiv.appendChild(lineLeft);
+                }
+
+                if (hasRight) {
+                    const lineRight = document.createElement('div');
+                    lineRight.className = 'line-vertical-right';
+                    nodeDiv.appendChild(lineRight);
+                }
                 
-                lineHorizontal.style.width = `${width}px`;
-                lineHorizontal.style.left = `calc(50% - ${width / 2}px)`;
-
-                container.appendChild(lineHorizontal);
-
-                // Envoltura para el hijo izquierdo
-                const leftWrapper = document.createElement('div');
-                leftWrapper.className = 'node-child-wrapper';
-                if (leftChild) {
-                    leftWrapper.appendChild(leftChild);
-                    // Línea vertical para hijo izquierdo
-                    const lineVerticalLeft = document.createElement('div');
-                    lineVerticalLeft.className = 'line-vertical-left';
-                    leftWrapper.appendChild(lineVerticalLeft);
-                } else {
-                    // Mantener el espaciado si no hay hijo izquierdo
-                    leftWrapper.style.minWidth = '40px'; 
-                }
-                childrenContainer.appendChild(leftWrapper);
-
-                // Envoltura para el hijo derecho
-                const rightWrapper = document.createElement('div');
-                rightWrapper.className = 'node-child-wrapper';
-                if (rightChild) {
-                    rightWrapper.appendChild(rightChild);
-                    // Línea vertical para hijo derecho
-                    const lineVerticalRight = document.createElement('div');
-                    lineVerticalRight.className = 'line-vertical-right';
-                    rightWrapper.appendChild(lineVerticalRight);
-                } else {
-                    // Mantener el espaciado si no hay hijo derecho
-                    rightWrapper.style.minWidth = '40px'; 
-                }
-                childrenContainer.appendChild(rightWrapper);
+                // Añadir hijos al contenedor
+                childrenContainer.appendChild(leftChild);
+                childrenContainer.appendChild(rightChild);
                 
                 container.appendChild(childrenContainer);
             }
             return container;
         }
+
 
         // Función principal para actualizar la visualización y la información
         function updateTreeVisualization() {
@@ -1405,25 +1469,37 @@ function factorial(n) {
             if (abb.root) {
                 const visual = drawTree(abb.root);
                 treeVisualizationContainer.appendChild(visual);
+            } else {
+                nodeDetailPanel.style.opacity = '0'; // Ocultar panel si el árbol está vacío
+                activeNodeElement = null;
             }
 
-            // 2. Actualizar la información
+            // 2. Actualizar la información GLOBAL
             const inOrder = abb.inOrder(abb.root).join(', ');
             const preOrder = abb.preOrder(abb.root).join(', ');
             const postOrder = abb.postOrder(abb.root).join(', ');
             const height = abb.getHeight();
             const leaves = abb.countLeaves();
-            const maxDepth = height > 0 ? height : 0; // Profundidad máxima es igual a la altura
+            const maxDepth = height > 0 ? height : 0;
 
             infoRecorridos.innerHTML = `Recorridos: <strong>In-orden:</strong> [${inOrder}] | <strong>Pre-orden:</strong> [${preOrder}] | <strong>Post-orden:</strong> [${postOrder}]`;
             infoEstructura.innerHTML = `<strong>Raíz:</strong> ${abb.root ? abb.root.value : '-'} | <strong>Altura:</strong> ${height} | <strong>Hojas:</strong> ${leaves}`;
             infoEstructuraDetalle.innerHTML = `<strong>Grado Máximo:</strong> ${abb.getMaxDegree()} | <strong>Profundidad Máxima:</strong> ${maxDepth}`;
+            
+            // Deseleccionar cualquier nodo si se modificó el árbol
+            if (activeNodeElement) {
+                activeNodeElement.classList.remove('active-node');
+                activeNodeElement = null;
+                nodeDetailPanel.style.opacity = '0';
+            }
         }
         
-        // Función de animación del recorrido (Pre-orden por defecto)
+        // Función de animación del recorrido
         async function animateTraversal(traversalOrder) {
             const nodes = document.querySelectorAll('.node-value');
-            nodes.forEach(n => n.classList.remove('visited'));
+            nodes.forEach(n => n.classList.remove('visited', 'highlight', 'active-node'));
+            nodeDetailPanel.style.opacity = '0';
+            activeNodeElement = null;
 
             const delay = 300; // Milisegundos entre visitas
 
@@ -1431,14 +1507,16 @@ function factorial(n) {
                 const nodeId = `node-${value}`;
                 const nodeElement = document.getElementById(nodeId);
 
-                // 1. Resaltar como "visitando"
-                nodeElement.classList.add('highlight');
-                await new Promise(resolve => setTimeout(resolve, delay));
-                
-                // 2. Marcar como "visitado"
-                nodeElement.classList.remove('highlight');
-                nodeElement.classList.add('visited');
-                await new Promise(resolve => setTimeout(resolve, delay));
+                if (nodeElement) {
+                    // 1. Resaltar como "visitando"
+                    nodeElement.classList.add('highlight');
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    
+                    // 2. Marcar como "visitado"
+                    nodeElement.classList.remove('highlight');
+                    nodeElement.classList.add('visited');
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
             }
         }
 
@@ -1451,7 +1529,7 @@ function factorial(n) {
                 updateTreeVisualization();
                 document.getElementById('valor-arbol').value = '';
             } else {
-                alert('Por favor, introduce un número válido entre 1 y 100.');
+                alert('Por favor, introduce un número entero válido entre 1 y 100.');
             }
         });
 
@@ -1470,4 +1548,3 @@ function factorial(n) {
     </script>
 </body>
 </html>
-
